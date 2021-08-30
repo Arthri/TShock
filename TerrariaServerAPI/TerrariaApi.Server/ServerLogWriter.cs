@@ -13,7 +13,15 @@ namespace TerrariaApi.Server
 			get { return "Server Log Writer"; }
 		}
 
-		public ServerLogWriter(string logFilePath = "ServerLog.txt") {
+		/// <summary>
+		/// Initializes a new ServerLogWriter and writes to <paramref name="logFilePath"/>.
+		/// </summary>
+		/// <param name="logFilePath">Represents the path to write to. If unspecified or null, it will write to <code>serverlogs/{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt</code></param>
+		public ServerLogWriter(string logFilePath = null) {
+			if (logFilePath == null)
+			{
+				logFilePath = $"serverlogs/{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt";
+			}
 			try
 			{
 				this.LogFileWriter = new StreamWriter(logFilePath, true);
