@@ -1,0 +1,1 @@
+- Replaced `Main.ServerSideCharacter` with `TShock.ServerSideCharacterConfig.Settings.Enabled` wherever possible

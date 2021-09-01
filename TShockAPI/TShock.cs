@@ -990,7 +990,7 @@ namespace TShockAPI
 				LastCheck = DateTime.UtcNow;
 			}
 
-			if (Main.ServerSideCharacter && (DateTime.UtcNow - LastSave).TotalMinutes >= ServerSideCharacterConfig.Settings.ServerSideCharacterSave)
+			if (TShock.ServerSideCharacterConfig.Settings.Enabled && (DateTime.UtcNow - LastSave).TotalMinutes >= ServerSideCharacterConfig.Settings.ServerSideCharacterSave)
 			{
 				foreach (TSPlayer player in Players)
 				{
@@ -1323,7 +1323,7 @@ namespace TShockAPI
 					Utils.Broadcast(tsplr.Name + " has left.", Color.Yellow);
 				Log.Info("{0} disconnected.", tsplr.Name);
 
-				if (tsplr.IsLoggedIn && !tsplr.IsDisabledPendingTrashRemoval && Main.ServerSideCharacter && (!tsplr.Dead || tsplr.TPlayer.difficulty != 2))
+				if (tsplr.IsLoggedIn && !tsplr.IsDisabledPendingTrashRemoval && TShock.ServerSideCharacterConfig.Settings.Enabled && (!tsplr.Dead || tsplr.TPlayer.difficulty != 2))
 				{
 					tsplr.PlayerData.CopyCharacter(tsplr);
 					CharacterDB.InsertPlayerData(tsplr);
@@ -1608,7 +1608,7 @@ namespace TShockAPI
 
 			if (!player.IsLoggedIn)
 			{
-				if (Main.ServerSideCharacter)
+				if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 				{
 					player.IsDisabledForSSC = true;
 					player.SendErrorMessage(String.Format("Server side characters is enabled! Please {0}register or {0}login to play!", Commands.Specifier));

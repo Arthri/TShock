@@ -2602,7 +2602,7 @@ namespace TShockAPI
 					args.Player.IsLoggedIn = true;
 					args.Player.IsDisabledForSSC = false;
 
-					if (Main.ServerSideCharacter)
+					if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 					{
 						if (args.Player.HasPermission(Permissions.bypassssc))
 						{
@@ -3182,7 +3182,7 @@ namespace TShockAPI
 					args.Player.IsLoggedIn = true;
 					args.Player.IsDisabledForSSC = false;
 
-					if (Main.ServerSideCharacter)
+					if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 					{
 						if (args.Player.HasPermission(Permissions.bypassssc))
 						{
@@ -4171,7 +4171,7 @@ namespace TShockAPI
 				}
 			}
 
-			if (args.TPlayer.difficulty == 2 && Main.ServerSideCharacter && args.Player.IsLoggedIn)
+			if (args.TPlayer.difficulty == 2 && TShock.ServerSideCharacterConfig.Settings.Enabled && args.Player.IsLoggedIn)
 			{
 				if (TShock.CharacterDB.RemovePlayer(args.Player.Account.ID))
 				{

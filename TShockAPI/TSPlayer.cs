@@ -934,7 +934,7 @@ namespace TShockAPI
 		/// <returns>bool - True/false if it saved successfully</returns>
 		public bool SaveServerCharacter()
 		{
-			if (!Main.ServerSideCharacter)
+			if (!TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				return false;
 			}
@@ -962,7 +962,7 @@ namespace TShockAPI
 		/// <returns>bool - True/false if it saved successfully</returns>
 		public bool SendServerCharacter()
 		{
-			if (!Main.ServerSideCharacter)
+			if (!TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				return false;
 			}
@@ -1133,7 +1133,7 @@ namespace TShockAPI
 		public void Logout()
 		{
 			PlayerHooks.OnPlayerLogout(this);
-			if (Main.ServerSideCharacter)
+			if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				IsDisabledForSSC = true;
 				if (!IsDisabledPendingTrashRemoval && (!Dead || TPlayer.difficulty != 2))

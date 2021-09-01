@@ -848,7 +848,7 @@ namespace TShockAPI
 					args.Player.IsLoggedIn = true;
 					args.Player.IsDisabledForSSC = false;
 
-					if (Main.ServerSideCharacter)
+					if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 					{
 						if (args.Player.HasPermission(Permissions.bypassssc))
 						{
@@ -919,7 +919,7 @@ namespace TShockAPI
 
 			args.Player.Logout();
 			args.Player.SendSuccessMessage("You have been successfully logged out of your account.");
-			if (Main.ServerSideCharacter)
+			if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				args.Player.SendWarningMessage("Server side characters are enabled. You need to be logged in to play.");
 			}
@@ -1714,7 +1714,7 @@ namespace TShockAPI
 
 		private static void SaveSSC(CommandArgs args)
 		{
-			if (Main.ServerSideCharacter)
+			if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				args.Player.SendSuccessMessage("SSC has been saved.");
 				foreach (TSPlayer player in TShock.Players)
@@ -1729,7 +1729,7 @@ namespace TShockAPI
 
 		private static void OverrideSSC(CommandArgs args)
 		{
-			if (!Main.ServerSideCharacter)
+			if (!TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				args.Player.SendErrorMessage("Server Side Characters is disabled.");
 				return;
@@ -1966,7 +1966,7 @@ namespace TShockAPI
 		private static void Off(CommandArgs args)
 		{
 
-			if (Main.ServerSideCharacter)
+			if (TShock.ServerSideCharacterConfig.Settings.Enabled)
 			{
 				foreach (TSPlayer player in TShock.Players)
 				{
