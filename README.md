@@ -28,6 +28,14 @@ TShock is a toolbox for Terraria servers and communities. That toolbox is jam pa
 ## ⚠ THIS VERSION IS MODIFIED
 A list of modifications is written in [MODIFICATIONS](https://github.com/Arthri/TShock/MODIFICATIONS)
 
+---
+
+## Branches
+
+- `general-devel` is the same as TShock's `general-devel`, but with additional changes
+
+All changes on `general-devel` will be mirrored to the other two branches if possible
+
 ----
 
 ## Table of Contents
