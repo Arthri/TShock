@@ -159,38 +159,6 @@ namespace TShockAPI.DB
 			}
 		}
 
-		internal bool CheckBan(TSPlayer player)
-		{
-			List<string> identifiers = new List<string>
-			{
-				$"{Identifier.UUID}{player.UUID}",
-				$"{Identifier.Name}{player.Name}",
-				$"{Identifier.IP}{player.IP}"
-			};
-
-			if (player.Account != null)
-			{
-				identifiers.Add($"{Identifier.Account}{player.Account.Name}");
-			}
-
-			Ban ban = TShock.Bans.Bans.FirstOrDefault(b => identifiers.Contains(b.Value.Identifier) && TShock.Bans.IsValidBan(b.Value, player)).Value;
-
-			if (ban != null)
-			{
-				if (ban.ExpirationDateTime == DateTime.MaxValue)
-				{
-					player.Disconnect("You are banned: " + ban.Reason);
-					return true;
-				}
-
-				TimeSpan ts = ban.ExpirationDateTime - DateTime.UtcNow;
-				player.Disconnect($"You are banned: {ban.Reason} ({ban.GetPrettyExpirationString()} remaining)");
-				return true;
-			}
-
-			return false;
-		}
-
 		/// <summary>
 		/// Determines whether or not a ban is valid
 		/// </summary>
@@ -215,8 +183,8 @@ namespace TShockAPI.DB
 			//Only perform validation if the event has not been cancelled before we got here
 			if (args.Valid)
 			{
-				//We consider a ban to be valid if the start time is before now and the end time is after now
-				args.Valid = (DateTime.UtcNow > args.Ban.BanDateTime && DateTime.UtcNow < args.Ban.ExpirationDateTime);
+				//We consider a ban to be valid if the start time is before now and the end time is after now, and the player is not immune to bans
+				args.Valid = (DateTime.UtcNow > args.Ban.BanDateTime && DateTime.UtcNow < args.Ban.ExpirationDateTime) && !args.Player.HasPermission(Permissions.immunetoban);
 			}
 		}
 

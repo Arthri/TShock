@@ -481,7 +481,22 @@ namespace TShockAPI
 			args.Player.Account.KnownIps = JsonConvert.SerializeObject(KnownIps, Formatting.Indented);
 			UserAccounts.UpdateLogin(args.Player.Account);
 
-			Bans.CheckBan(args.Player);
+			//Check if this user has a recorded ban on their account
+			var ban = Bans.Bans.FirstOrDefault(b => b.Value.Identifier == $"{Identifier.Account}{args.Player.Account.Name}" && Bans.IsValidBan(b.Value, args.Player)).Value;
+
+			//If they do and the ban is still valid, kick them
+			if (ban != null && !args.Player.HasPermission(Permissions.immunetoban))
+			{
+				if (ban.ExpirationDateTime == DateTime.MaxValue)
+				{
+					args.Player.Disconnect("You are banned: " + ban.Reason);
+				}
+				else
+				{
+					TimeSpan ts = ban.ExpirationDateTime - DateTime.UtcNow;
+					args.Player.Disconnect($"You are banned: {ban.Reason} ({ban.GetPrettyExpirationString()} remaining)");
+				}
+			}
 		}
 
 		/// <summary>OnAccountDelete - Internal hook fired on account delete.</summary>
@@ -1279,7 +1294,29 @@ namespace TShockAPI
 				return;
 			}
 
-			Bans.CheckBan(player);
+			List<string> identifiers = new List<string>
+			{
+				$"{Identifier.UUID}{player.UUID}",
+				$"{Identifier.Name}{player.Name}",
+				$"{Identifier.IP}{player.IP}"
+			};
+
+			Ban ban = Bans.Bans.FirstOrDefault(b => identifiers.Contains(b.Value.Identifier) && Bans.IsValidBan(b.Value, player)).Value;
+
+			if (ban != null)
+			{
+				if (ban.ExpirationDateTime == DateTime.MaxValue)
+				{
+					player.Disconnect("You are banned: " + ban.Reason);
+				}
+				else
+				{
+					TimeSpan ts = ban.ExpirationDateTime - DateTime.UtcNow;
+					player.Disconnect($"You are banned: {ban.Reason} ({ban.GetPrettyExpirationString()} remaining)");
+				}
+
+				args.Handled = true;
+			}
 		}
 
 		/// <summary>OnLeave - Called when a player leaves the server.</summary>
