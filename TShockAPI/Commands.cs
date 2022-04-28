@@ -1389,7 +1389,7 @@ namespace TShockAPI
 
 			void DisplayBanDetails(Ban ban)
 			{
-				args.Player.SendMessage($"{"Ban Details".Color(Utils.BoldHighlight)} - Ticket Number: {ban.TicketNumber.Color(Utils.GreenHighlight)}", Color.White);
+				args.Player.SendMessage($"{"Ban Details".Color(Utils.BoldHighlight)} - Unique ID: {ban.UniqueId.Color(Utils.GreenHighlight)}", Color.White);
 				args.Player.SendMessage($"{"Identifier:".Color(Utils.BoldHighlight)} {ban.Identifier}", Color.White);
 				args.Player.SendMessage($"{"Reason:".Color(Utils.BoldHighlight)} {ban.Reason}", Color.White);
 				args.Player.SendMessage($"{"Banned by:".Color(Utils.BoldHighlight)} {ban.BanningUser.Color(Utils.GreenHighlight)} on {ban.BanDateTime.ToString("yyyy/MM/dd").Color(Utils.RedHighlight)} ({ban.GetPrettyTimeSinceBanString().Color(Utils.YellowHighlight)} ago)", Color.White);
@@ -1474,7 +1474,7 @@ namespace TShockAPI
 					banResult = TShock.Bans.InsertBan(target, reason ?? "Banned", args.Player.Account.Name, DateTime.UtcNow, expiration);
 					if (banResult.Ban != null)
 					{
-						args.Player.SendSuccessMessage($"Ban added. Ticket Number: {banResult.Ban.TicketNumber}.");
+						args.Player.SendSuccessMessage($"Ban ID {banResult.Ban.UniqueId} added.");
 						DisplayBanDetails(banResult.Ban);
 					}
 					else
@@ -1506,7 +1506,7 @@ namespace TShockAPI
 					banResult = TShock.Bans.InsertBan(ident, reason, args.Player.Account.Name, DateTime.UtcNow, expiration);
 					if (banResult.Ban != null)
 					{
-						args.Player.SendSuccessMessage($"Ban Ticket Number {banResult.Ban.TicketNumber.Color(Utils.GreenHighlight)} created for identifier {ident}.");
+						args.Player.SendSuccessMessage($"Ban ID {banResult.Ban.UniqueId} added for identifier {ident}.");
 						banReason = banResult.Ban.Reason;
 					}
 					else
@@ -1635,7 +1635,7 @@ namespace TShockAPI
 				args.Player.SendWarningMessage($"If you are sure you wish to proceed, please execute {"ban-convert-confirm".Color(Utils.WhiteHighlight)} to continue.");
 				args.Player.AddResponse("ban-convert-confirm", (obj) =>
 				{
-					TShock.Bans.TryConvertBans();
+					TShock.Bans.ConvertBans();
 
 					var cmdArgs = (CommandArgs)obj;
 					cmdArgs.Player.SendSuccessMessage("Bans have been converted.");

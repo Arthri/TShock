@@ -635,29 +635,28 @@ namespace TShockAPI
 			if (!DateTime.TryParse(args.Parameters["end"], out DateTime endDate))
 				endDate = DateTime.MaxValue;
 
-			AddBanResult banResult = TShock.Bans.InsertBan(identifier, reason, args.TokenData.Username, startDate, endDate);
-			if (banResult.Ban != null)
+			if (TShock.Bans.InsertBan(identifier, reason, args.TokenData.Username, startDate, endDate) != null)
 			{
 				TSPlayer player = null;
-				if (identifier.StartsWith(Identifier.IP.Prefix))
+				if (identifier.StartsWith(Identifiers.IP))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.IP == identifier.Substring(Identifier.IP.Prefix.Length));
+					player = TShock.Players.FirstOrDefault(p => p.IP == identifier.Substring(Identifiers.IP.Length));
 				}
-				else if (identifier.StartsWith(Identifier.Name.Prefix))
+				else if (identifier.StartsWith(Identifiers.Name))
 				{
 					//Character names may not necessarily be unique, so kick all matches
-					foreach (var ply in TShock.Players.Where(p => p.Name == identifier.Substring(Identifier.Name.Prefix.Length)))
+					foreach (var ply in TShock.Players.Where(p => p.Name == identifier.Substring(Identifiers.Name.Length)))
 					{
 						ply.Kick(reason, true);
 					}
 				}
-				else if (identifier.StartsWith(Identifier.Account.Prefix))
+				else if (identifier.StartsWith(Identifiers.Account))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.Account?.Name == identifier.Substring(Identifier.Account.Prefix.Length));
+					player = TShock.Players.FirstOrDefault(p => p.Account?.Name == identifier.Substring(Identifiers.Account.Length));
 				}
-				else if (identifier.StartsWith(Identifier.UUID.Prefix))
+				else if (identifier.StartsWith(Identifiers.UUID))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.UUID == identifier.Substring(Identifier.UUID.Prefix.Length));
+					player = TShock.Players.FirstOrDefault(p => p.UUID == identifier.Substring(Identifiers.UUID.Length));
 				}
 
 				if (player != null)
@@ -665,32 +664,32 @@ namespace TShockAPI
 					player.Kick(reason, true);
 				}
 
-				return RestResponse($"Ban added. Ticket number: {banResult.Ban.TicketNumber}");
+				return RestResponse("Ban added.");
 			}
 
-			return RestError($"Failed to add ban. {banResult.Message}", status: "500");
+			return RestError("Failed to add ban.", status: "500");
 		}
 
 		[Description("Delete an existing ban entry.")]
 		[Route("/v3/bans/destroy")]
 		[Permission(RestPermissions.restmanagebans)]
-		[Noun("ticketNumber", true, "The ticket number of the ban to delete.", typeof(String))]
+		[Noun("uniqueId", true, "The unique ID of the ban to delete.", typeof(String))]
 		[Noun("fullDelete", false, "Whether or not to completely remove the ban from the system.", typeof(bool))]
 		[Token]
 		private object BanDestroyV3(RestRequestArgs args)
 		{
-			string id = args.Parameters["ticketNumber"];
+			string id = args.Parameters["uniqueId"];
 			if (string.IsNullOrWhiteSpace(id))
-				return RestMissingParam("ticketNumber");
+				return RestMissingParam("uniqueId");
 
-			if (!int.TryParse(id, out int ticketNumber))
+			if (!int.TryParse(id, out int uniqueId))
 			{
-				return RestInvalidParam("ticketNumber");
+				return RestInvalidParam("uniqueId");
 			}
 
 			bool.TryParse(args.Parameters["fullDelete"], out bool fullDelete);
 
-			if (TShock.Bans.RemoveBan(ticketNumber, fullDelete))
+			if (TShock.Bans.RemoveBan(uniqueId, fullDelete))
 			{
 				return RestResponse("Ban removed.");
 			}
@@ -701,20 +700,20 @@ namespace TShockAPI
 		[Description("View the details of a specific ban.")]
 		[Route("/v3/bans/read")]
 		[Permission(RestPermissions.restviewbans)]
-		[Noun("ticketNumber", true, "The ticket number to search for.", typeof(String))]
+		[Noun("uniqueId", true, "The unique ID to search for.", typeof(String))]
 		[Token]
 		private object BanInfoV3(RestRequestArgs args)
 		{
-			string id = args.Parameters["ticketNumber"];
+			string id = args.Parameters["uniqueId"];
 			if (string.IsNullOrWhiteSpace(id))
-				return RestMissingParam("ticketNumber");
+				return RestMissingParam("uniqueId");
 
-			if (!int.TryParse(id, out int ticketNumber))
+			if (!int.TryParse(id, out int uniqueId))
 			{
-				return RestInvalidParam("ticketNumber");
+				return RestInvalidParam("uniqueId");
 			}
 
-			Ban ban = TShock.Bans.GetBanById(ticketNumber);
+			Ban ban = TShock.Bans.GetBanById(uniqueId);
 
 			if (ban == null)
 			{
@@ -723,12 +722,11 @@ namespace TShockAPI
 
 			return new RestObject
 			{
-				{ "ticket_number", ban.TicketNumber },
-				{ "identifier", ban.Identifier },
-				{ "reason", ban.Reason },
-				{ "banning_user", ban.BanningUser },
-				{ "start_date_ticks", ban.BanDateTime.Ticks },
-				{ "end_date_ticks", ban.ExpirationDateTime.Ticks },
+				{"identifier", ban.Identifier },
+				{"reason", ban.Reason },
+				{"banning_user", ban.BanningUser },
+				{"fromDate", ban.BanDateTime.ToString("s") },
+				{"toDate", ban.ExpirationDateTime.ToString("s") },
 			};
 		}
 
@@ -744,14 +742,13 @@ namespace TShockAPI
 			foreach (var ban in bans)
 			{
 				banList.Add(
-					new Dictionary<string, object>
+					new Dictionary<string, string>
 					{
-						{ "ticket_number", ban.TicketNumber },
-						{ "identifier", ban.Identifier },
-						{ "reason", ban.Reason },
-						{ "banning_user", ban.BanningUser },
-						{ "start_date_ticks", ban.BanDateTime.Ticks },
-						{ "end_date_ticks", ban.ExpirationDateTime.Ticks },
+						{"identifier", ban.Identifier },
+						{"reason", ban.Reason },
+						{"banning_user", ban.BanningUser },
+						{"fromDate", ban.BanDateTime.ToString("s") },
+						{"toDate", ban.ExpirationDateTime.ToString("s") },
 					}
 				);
 			}
