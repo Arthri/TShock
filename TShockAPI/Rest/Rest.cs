@@ -62,9 +62,12 @@ namespace Rests
 	/// <summary>
 	/// Wraps an <see cref="IParameterCollection"/>, providing URI-unescaping for the parameters in the collection
 	/// </summary>
-	public class EscapedParameterCollection : IEnumerable<EscapedParameter>
+	public class EscapedParameterCollection : IEnumerable<EscapedParameter>, IParameterCollection
 	{
 		private readonly IParameterCollection _collection;
+
+		/// <inheritdoc />
+		public int Count => _collection.Count;
 
 		/// <summary>
 		/// Retrieve a parameter by name, returning the URI-unescaped value
@@ -104,6 +107,29 @@ namespace Rests
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return this.GetEnumerator();
+		}
+
+		/// <inheritdoc />
+		public IParameter Get(string name)
+		{
+			return _collection.Get(name);
+		}
+
+		/// <inheritdoc />
+		public void Add(string name, string value)
+		{
+			_collection.Add(name, value);
+		}
+
+		/// <inheritdoc />
+		public bool Exists(string name)
+		{
+			return _collection.Exists(name);
+		}
+
+		IEnumerator<IParameter> IEnumerable<IParameter>.GetEnumerator()
+		{
+			return _collection.GetEnumerator();
 		}
 	}
 
