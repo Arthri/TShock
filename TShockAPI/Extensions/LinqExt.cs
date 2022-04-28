@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TShockAPI
 {
@@ -31,26 +30,6 @@ namespace TShockAPI
 
 			foreach (T item in source)
 				action(item);
-		}
-
-		/// <summary>
-		/// Attempts to retrieve the value at the given index from the enumerable
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="enumerable"></param>
-		/// <param name="index"></param>
-		/// <param name="value"></param>
-		/// <returns></returns>
-		public static bool TryGetValue<T>(this IEnumerable<T> enumerable, int index, out T value)
-		{
-			if (index < enumerable.Count())
-			{
-				value = enumerable.ElementAt(index);
-				return true;
-			}
-
-			value = default;
-			return false;
 		}
 	}
 }

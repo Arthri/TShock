@@ -155,7 +155,7 @@ namespace TShockAPI
 		/// <summary>
 		/// Creates a new instance of <see cref="Token"/>
 		/// </summary>
-		public Token() : base("token", true, "The REST authentication token.", typeof(String)) { }
+		public Token() : base("token", true, "The REST authentication token.", typeof(String)){}
 	}
 
 	/// <summary>
@@ -216,13 +216,9 @@ namespace TShockAPI
 			Rest.RegisterRedirect("/users/update", "/v2/users/update");
 
 			//ban commands
-			Rest.RegisterRedirect("/bans/create", "/v3/bans/create");
-			Rest.RegisterRedirect("/bans/list", "/v3/bans/list");
-			Rest.RegisterRedirect("/bans/read", "/v3/bans/read");
-			Rest.RegisterRedirect("/bans/destroy", "/v3/bans/destroy");
-			Rest.RegisterRedirect("/v2/bans/list", "/v3/bans/list");
-			Rest.RegisterRedirect("/v2/bans/read", "/v3/bans/read");
-			Rest.RegisterRedirect("/v2/bans/destroy", "/v3/bans/destroy");
+			Rest.RegisterRedirect("/bans/list", "/v2/bans/list");
+			Rest.RegisterRedirect("/bans/read", "/v2/bans/read");
+			Rest.RegisterRedirect("/bans/destroy", "/v2/bans/destroy");
 
 			//world commands
 			Rest.RegisterRedirect("/world/bloodmoon", "v3/world/bloodmoon");
@@ -262,10 +258,10 @@ namespace TShockAPI
 			Rest.Register(new SecureRestCommand("/v2/users/update", UserUpdateV2, RestPermissions.restmanageusers) { DoLog = false });
 
 			// Ban Commands
-			Rest.Register(new SecureRestCommand("/v3/bans/create", BanCreateV3, RestPermissions.restban, RestPermissions.restmanagebans));
-			Rest.Register(new SecureRestCommand("/v3/bans/list", BanListV3, RestPermissions.restviewbans));
-			Rest.Register(new SecureRestCommand("/v3/bans/read", BanInfoV3, RestPermissions.restviewbans));
-			Rest.Register(new SecureRestCommand("/v3/bans/destroy", BanDestroyV3, RestPermissions.restmanagebans));
+			Rest.Register(new SecureRestCommand("/bans/create", BanCreate, RestPermissions.restmanagebans));
+			Rest.Register(new SecureRestCommand("/v2/bans/list", BanListV2, RestPermissions.restviewbans));
+			Rest.Register(new SecureRestCommand("/v2/bans/read", BanInfoV2, RestPermissions.restviewbans));
+			Rest.Register(new SecureRestCommand("/v2/bans/destroy", BanDestroyV2, RestPermissions.restmanagebans));
 
 			// World Commands
 			Rest.Register(new SecureRestCommand("/world/read", WorldRead));
@@ -283,6 +279,7 @@ namespace TShockAPI
 			Rest.Register(new SecureRestCommand("/v3/players/read", PlayerReadV3, RestPermissions.restuserinfo));
 			Rest.Register(new SecureRestCommand("/v4/players/read", PlayerReadV4, RestPermissions.restuserinfo));
 			Rest.Register(new SecureRestCommand("/v2/players/kick", PlayerKickV2, RestPermissions.restkick));
+			Rest.Register(new SecureRestCommand("/v2/players/ban", PlayerBanV2, RestPermissions.restban, RestPermissions.restmanagebans));
 			Rest.Register(new SecureRestCommand("/v2/players/kill", PlayerKill, RestPermissions.restkill));
 			Rest.Register(new SecureRestCommand("/v2/players/mute", PlayerMute, RestPermissions.restmute));
 			Rest.Register(new SecureRestCommand("/v2/players/unmute", PlayerUnMute, RestPermissions.restmute));
@@ -612,141 +609,115 @@ namespace TShockAPI
 		#region Rest Ban Methods
 
 		[Description("Create a new ban entry.")]
-		[Route("/v3/bans/create")]
+		[Route("/bans/create")]
 		[Permission(RestPermissions.restmanagebans)]
-		[Noun("identifier", true, "The identifier to ban.", typeof(String))]
+		[Noun("ip", false, "The IP to ban, at least this or name must be specified.", typeof(String))]
+		[Noun("name", false, "The name to ban, at least this or ip must be specified.", typeof(String))]
 		[Noun("reason", false, "The reason to assign to the ban.", typeof(String))]
-		[Noun("start", false, "The datetime at which the ban should start.", typeof(String))]
-		[Noun("end", false, "The datetime at which the ban should end.", typeof(String))]
 		[Token]
-		private object BanCreateV3(RestRequestArgs args)
+		private object BanCreate(RestRequestArgs args)
 		{
-			string identifier = args.Parameters["identifier"];
-			if (string.IsNullOrWhiteSpace(identifier))
-				return RestMissingParam("identifier");
+			var ip = args.Parameters["ip"];
+			var name = args.Parameters["name"];
 
-			string reason = args.Parameters["reason"];
-			if (string.IsNullOrWhiteSpace(reason))
-				reason = "Banned";
+			if (string.IsNullOrWhiteSpace(ip) && string.IsNullOrWhiteSpace(name))
+				return RestMissingParam("ip", "name");
 
-			if (!DateTime.TryParse(args.Parameters["start"], out DateTime startDate))
-				startDate = DateTime.UtcNow;
-
-			if (!DateTime.TryParse(args.Parameters["end"], out DateTime endDate))
-				endDate = DateTime.MaxValue;
-
-			if (TShock.Bans.InsertBan(identifier, reason, args.TokenData.Username, startDate, endDate) != null)
+			try
 			{
-				TSPlayer player = null;
-				if (identifier.StartsWith(Ban.Identifiers.IP))
-				{
-					player = TShock.Players.FirstOrDefault(p => p.IP == identifier.Substring(Ban.Identifiers.IP.Length));
-				}
-				else if (identifier.StartsWith(Ban.Identifiers.Name))
-				{
-					//Character names may not necessarily be unique, so kick all matches
-					foreach (var ply in TShock.Players.Where(p => p.Name == identifier.Substring(Ban.Identifiers.Name.Length)))
-					{
-						ply.Kick(reason, true);
-					}
-				}
-				else if (identifier.StartsWith(Ban.Identifiers.Account))
-				{
-					player = TShock.Players.FirstOrDefault(p => p.Account?.Name == identifier.Substring(Ban.Identifiers.Account.Length));
-				}
-				else if (identifier.StartsWith(Ban.Identifiers.UUID))
-				{
-					player = TShock.Players.FirstOrDefault(p => p.UUID == identifier.Substring(Ban.Identifiers.UUID.Length));
-				}
-
-				if (player != null)
-				{
-					player.Kick(reason, true);
-				}
-
-				return RestResponse("Ban added.");
+				TShock.Bans.AddBan(ip, name, "", "", args.Parameters["reason"], true, args.TokenData.Username);
 			}
-
-			return RestError("Failed to add ban.", status: "500");
+			catch (Exception e)
+			{
+				return RestError(e.Message);
+			}
+			return RestResponse("Ban created successfully");
 		}
 
 		[Description("Delete an existing ban entry.")]
-		[Route("/v3/bans/destroy")]
+		[Route("/v2/bans/destroy")]
 		[Permission(RestPermissions.restmanagebans)]
-		[Noun("identifier", true, "The identifier of the ban to delete.", typeof(String))]
-		[Noun("fullDelete", false, "Whether or not to completely remove the ban from the system.", typeof(bool))]
+		[Noun("ban", true, "The search criteria, either an IP address or a name.", typeof(String))]
+		[Noun("type", true, "The type of search criteria, 'ip' or 'name'.  Also used as the method of removing from the database.", typeof(String))]
+		[Noun("caseinsensitive", false, "Name lookups should be case insensitive.", typeof(bool))]
 		[Token]
-		private object BanDestroyV3(RestRequestArgs args)
+		private object BanDestroyV2(RestRequestArgs args)
 		{
-			string identifier = args.Parameters["identifier"];
-			if (string.IsNullOrWhiteSpace(identifier))
-				return RestMissingParam("identifier");
+			var ret = BanFind(args.Parameters);
+			if (ret is RestObject)
+				return ret;
 
-			bool.TryParse(args.Parameters["fullDelete"], out bool fullDelete);
-
-			if (TShock.Bans.RemoveBan(identifier, fullDelete))
+			try
 			{
-				return RestResponse("Ban removed.");
+				Ban ban = (Ban)ret;
+				switch (args.Parameters["type"])
+				{
+					case "ip":
+						if (!TShock.Bans.RemoveBan(ban.IP, false, false, true))
+							return RestResponse("Failed to delete ban (already deleted?)");
+						break;
+					case "name":
+						if (!TShock.Bans.RemoveBan(ban.Name, true, GetBool(args.Parameters["caseinsensitive"], true)))
+							return RestResponse("Failed to delete ban (already deleted?)");
+						break;
+					default:
+						return RestError("Invalid Type: '" + args.Parameters["type"] + "'");
+				}
+
+			}
+			catch (Exception e)
+			{
+				return RestError(e.Message);
 			}
 
-			return RestError("Failed to remove ban.", status: "500");
+			return RestResponse("Ban deleted successfully");
 		}
 
 		[Description("View the details of a specific ban.")]
-		[Route("/v3/bans/read")]
+		[Route("/v2/bans/read")]
 		[Permission(RestPermissions.restviewbans)]
-		[Noun("identifier", true, "The identifier to search for.", typeof(String))]
+		[Noun("ban", true, "The search criteria, either an IP address or a name.", typeof(String))]
+		[Noun("type", true, "The type of search criteria, 'ip' or 'name'.", typeof(String))]
+		[Noun("caseinsensitive", false, "Name lookups should be case insensitive.", typeof(bool))]
 		[Token]
-		private object BanInfoV3(RestRequestArgs args)
+		private object BanInfoV2(RestRequestArgs args)
 		{
-			string identifier = args.Parameters["identifier"];
-			if (string.IsNullOrWhiteSpace(identifier))
-				return RestMissingParam("identifier");
+			var ret = BanFind(args.Parameters);
+			if (ret is RestObject)
+				return ret;
 
-			Ban ban = TShock.Bans.GetBanByIdentifier(identifier);
-
-			if (ban == null)
-			{
-				return RestResponse("No matching bans found.");
-			}
-
-			return new RestObject
-			{
-				{"identifier", ban.Identifier },
-				{"reason", ban.Reason },
-				{"banning_user", ban.BanningUser },
-				{"fromDate", ban.BanDateTime.ToString("s") },
-				{"toDate", ban.ExpirationDateTime.ToString("s") },
+			Ban ban = (Ban)ret;
+			return new RestObject() {
+				{"name", null == ban.Name ? "" : ban.Name},
+				{"ip", null == ban.IP ? "" : ban.IP},
+				{"banning_user", null == ban.BanningUser ? "" : ban.BanningUser},
+				{"date", null == ban.BanDateTime ? "" : ban.BanDateTime.Value.ToString()},
+				{"reason", null == ban.Reason ? "" : ban.Reason},
 			};
 		}
 
 		[Description("View all bans in the TShock database.")]
-		[Route("/v3/bans/list")]
+		[Route("/v2/bans/list")]
 		[Permission(RestPermissions.restviewbans)]
 		[Token]
-		private object BanListV3(RestRequestArgs args)
+		private object BanListV2(RestRequestArgs args)
 		{
-			IEnumerable<Ban> bans = TShock.Bans.GetAllBans();
-
 			var banList = new ArrayList();
-			foreach (var ban in bans)
+			foreach (var ban in TShock.Bans.GetBans())
 			{
 				banList.Add(
 					new Dictionary<string, string>
 					{
-						{"identifier", ban.Identifier },
-						{"reason", ban.Reason },
-						{"banning_user", ban.BanningUser },
-						{"fromDate", ban.BanDateTime.ToString("s") },
-						{"toDate", ban.ExpirationDateTime.ToString("s") },
+						{"name", null == ban.Name ? "" : ban.Name},
+						{"ip", null == ban.IP ? "" : ban.IP},
+            					{"banning_user", null == ban.BanningUser ? "" : ban.BanningUser},
+						{"date", null == ban.BanDateTime ? "" : ban.BanDateTime.Value.ToString()},
+						{"reason", null == ban.Reason ? "" : ban.Reason},
 					}
 				);
 			}
 
-			return new RestObject
-			{
-				{ "bans", banList }
-			};
+			return new RestObject() { { "bans", banList } };
 		}
 
 		#endregion
@@ -1016,6 +987,26 @@ namespace TShockAPI
 			return RestResponse("Player " + player.Name + " was kicked");
 		}
 
+		[Description("Add a ban to the database.")]
+		[Route("/v2/players/ban")]
+		[Permission(RestPermissions.restban)]
+		[Permission(RestPermissions.restmanagebans)]
+		[Noun("player", true, "The player to kick.", typeof(String))]
+		[Noun("reason", false, "The reason the user was banned.", typeof(String))]
+		[Token]
+		private object PlayerBanV2(RestRequestArgs args)
+		{
+			var ret = PlayerFind(args.Parameters);
+			if (ret is RestObject)
+				return ret;
+
+			TSPlayer player = (TSPlayer)ret;
+			var reason = null == args.Parameters["reason"] ? "Banned via web" : args.Parameters["reason"];
+			TShock.Bans.AddBan(player.IP, player.Name, "", "", reason);
+			player.Kick(reason, true, false, null, true);
+			return RestResponse("Player " + player.Name + " was banned");
+		}
+
 		[Description("Kill a player.")]
 		[Route("/v2/players/kill")]
 		[Permission(RestPermissions.restkill)]
@@ -1048,7 +1039,7 @@ namespace TShockAPI
 			var groups = new ArrayList();
 			foreach (Group group in TShock.Groups)
 			{
-				groups.Add(new Dictionary<string, object> { { "name", group.Name }, { "parent", group.ParentName }, { "chatcolor", group.ChatColor } });
+				groups.Add(new Dictionary<string, object> {{"name", group.Name}, {"parent", group.ParentName}, {"chatcolor", group.ChatColor}});
 			}
 			return new RestObject() { { "groups", groups } };
 		}
@@ -1209,7 +1200,7 @@ namespace TShockAPI
 						}
 					}
 					sb.AppendLine("Example Usage: {0}?{1}".SFormat(routeattr.Route,
-						string.Join("&", nouns.Select(n => String.Format("{0}={0}", ((Noun)n).Name)))));
+						string.Join("&", nouns.Select(n => String.Format("{0}={0}", ((Noun) n).Name)))));
 					sb.AppendLine();
 				}
 			}
@@ -1219,12 +1210,12 @@ namespace TShockAPI
 
 		private RestObject RestError(string message, string status = "400")
 		{
-			return new RestObject(status) { Error = message };
+			return new RestObject(status) {Error = message};
 		}
 
 		private RestObject RestResponse(string message, string status = "200")
 		{
-			return new RestObject(status) { Response = message };
+			return new RestObject(status) {Response = message};
 		}
 
 		private RestObject RestMissingParam(string var)
@@ -1255,7 +1246,7 @@ namespace TShockAPI
 				return RestMissingParam("player");
 
 			var found = TSPlayer.FindByNameOrID(name);
-			switch (found.Count)
+			switch(found.Count)
 			{
 				case 1:
 					return found[0];
@@ -1299,6 +1290,35 @@ namespace TShockAPI
 				return RestError(String.Format("User {0} '{1}' doesn't exist", type, name));
 
 			return account;
+		}
+
+		private object BanFind(IParameterCollection parameters)
+		{
+			string name = parameters["ban"];
+			if (string.IsNullOrWhiteSpace(name))
+				return RestMissingParam("ban");
+
+			string type = parameters["type"];
+			if (string.IsNullOrWhiteSpace(type))
+				return RestMissingParam("type");
+
+			Ban ban;
+			switch (type)
+			{
+				case "ip":
+					ban = TShock.Bans.GetBanByIp(name);
+					break;
+				case "name":
+					ban = TShock.Bans.GetBanByName(name, GetBool(parameters["caseinsensitive"], true));
+					break;
+				default:
+					return RestError("Invalid Type: '" + type + "'");
+			}
+
+			if (null == ban)
+				return RestError("Ban " + type + " '" + name + "' doesn't exist");
+
+			return ban;
 		}
 
 		private object GroupFind(EscapedParameterCollection parameters)
