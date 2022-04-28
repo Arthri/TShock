@@ -100,12 +100,9 @@ namespace TShockAPI.DB
 						com.AddParameter("@" + i, args[i]);
 
 					object output = com.ExecuteScalar();
-					if (output.GetType() != typeof(T))
+					if (typeof(IConvertible).IsAssignableFrom(output.GetType()))
 					{
-						if (typeof(IConvertible).IsAssignableFrom(output.GetType()))
-						{
-							return (T)Convert.ChangeType(output, typeof(T));
-						}
+						return (T)Convert.ChangeType(output, typeof(T));
 					}
 
 					return (T)output;
