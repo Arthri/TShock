@@ -1300,19 +1300,19 @@ namespace TShockAPI
 			}
 
 			Ban ban = null;
-			if (Config.EnableBanOnUsernames)
+			if (Config.Settings.EnableBanOnUsernames)
 			{
 				var newban = Bans.GetBanByName(player.Name);
 				if (null != newban)
 					ban = newban;
 			}
 
-			if (Config.EnableIPBans && null == ban)
+			if (Config.Settings.EnableIPBans && null == ban)
 			{
 				ban = Bans.GetBanByIp(player.IP);
 			}
 
-			if (Config.EnableUUIDBans && null == ban && !String.IsNullOrWhiteSpace(player.UUID))
+			if (Config.Settings.EnableUUIDBans && null == ban && !String.IsNullOrWhiteSpace(player.UUID))
 			{
 				ban = Bans.GetBanByUUID(player.UUID);
 			}
