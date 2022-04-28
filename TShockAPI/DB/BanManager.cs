@@ -21,7 +21,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using MySql.Data.MySqlClient;
-using System.Collections.ObjectModel;
 
 namespace TShockAPI.DB
 {
@@ -35,9 +34,9 @@ namespace TShockAPI.DB
 		private Dictionary<int, Ban> _bans;
 
 		/// <summary>
-		/// Readonly dictionary of Bans, keyed on ban ticket number.
+		/// Dictionary of Bans, keyed on ban ticket number
 		/// </summary>
-		public ReadOnlyDictionary<int, Ban> Bans
+		public Dictionary<int, Ban> Bans
 		{
 			get
 			{
@@ -46,7 +45,7 @@ namespace TShockAPI.DB
 					_bans = RetrieveAllBans().ToDictionary(b => b.TicketNumber);
 				}
 
-				return new ReadOnlyDictionary<int, Ban>(_bans);
+				return _bans;
 			}
 		}
 
