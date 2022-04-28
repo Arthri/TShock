@@ -481,21 +481,13 @@ namespace TShockAPI
 			args.Player.Account.KnownIps = JsonConvert.SerializeObject(KnownIps, Formatting.Indented);
 			UserAccounts.UpdateLogin(args.Player.Account);
 
-			//Check if this user has a recorded ban on their account
-			var ban = Bans.Bans.FirstOrDefault(b => b.Value.Identifier == $"{Identifiers.Account}{args.Player.Account.Name}" && Bans.IsValidBan(b.Value, args.Player)).Value;
+			//Check if this user has any recorded bans
+			var validBan = Bans.GetBansByIdentifiers($"acc:{args.Player.Account.Name}", $"uuid:{args.Player.UUID}").FirstOrDefault(b => Bans.IsValidBan(b));
 
-			//If they do and the ban is still valid, kick them
-			if (ban != null && !args.Player.HasPermission(Permissions.immunetoban))
+			//If they do and any are still valid, kick them
+			if (validBan != null)
 			{
-				if (ban.ExpirationDateTime == DateTime.MaxValue)
-				{
-					args.Player.Disconnect("You are banned: " + ban.Reason);
-				}
-				else
-				{
-					TimeSpan ts = ban.ExpirationDateTime - DateTime.UtcNow;
-					args.Player.Disconnect($"You are banned: {ban.Reason} ({ban.GetPrettyExpirationString()} remaining)");
-				}
+				args.Player.Kick($"You are banned: {validBan.Reason}", true, true);
 			}
 		}
 
@@ -1294,14 +1286,7 @@ namespace TShockAPI
 				return;
 			}
 
-			List<string> identifiers = new List<string>
-			{
-				$"{Identifiers.UUID}{player.UUID}",
-				$"{Identifiers.Name}{player.Name}",
-				$"{Identifiers.IP}{player.IP}"
-			};
-
-			Ban ban = Bans.Bans.FirstOrDefault(b => identifiers.Contains(b.Value.Identifier) && Bans.IsValidBan(b.Value, player)).Value;
+			Ban ban = Bans.GetBansByIdentifiers($"name:{player.Name}", $"uuid:{player.UUID}", $"ip:{player.IP}").FirstOrDefault(b => Bans.IsValidBan(b));
 
 			if (ban != null)
 			{
@@ -1312,9 +1297,33 @@ namespace TShockAPI
 				else
 				{
 					TimeSpan ts = ban.ExpirationDateTime - DateTime.UtcNow;
-					player.Disconnect($"You are banned: {ban.Reason} ({ban.GetPrettyExpirationString()} remaining)");
+					int months = ts.Days / 30;
+					if (months > 0)
+					{
+						player.Disconnect(String.Format("You are banned for {0} month{1} and {2} day{3}: {4}",
+							months, months == 1 ? "" : "s", ts.Days, ts.Days == 1 ? "" : "s", ban.Reason));
+					}
+					else if (ts.Days > 0)
+					{
+						player.Disconnect(String.Format("You are banned for {0} day{1} and {2} hour{3}: {4}",
+							ts.Days, ts.Days == 1 ? "" : "s", ts.Hours, ts.Hours == 1 ? "" : "s", ban.Reason));
+					}
+					else if (ts.Hours > 0)
+					{
+						player.Disconnect(String.Format("You are banned for {0} hour{1} and {2} minute{3}: {4}",
+							ts.Hours, ts.Hours == 1 ? "" : "s", ts.Minutes, ts.Minutes == 1 ? "" : "s", ban.Reason));
+					}
+					else if (ts.Minutes > 0)
+					{
+						player.Disconnect(String.Format("You are banned for {0} minute{1} and {2} second{3}: {4}",
+							ts.Minutes, ts.Minutes == 1 ? "" : "s", ts.Seconds, ts.Seconds == 1 ? "" : "s", ban.Reason));
+					}
+					else
+					{
+						player.Disconnect(String.Format("You are banned for {0} second{1}: {2}",
+							ts.Seconds, ts.Seconds == 1 ? "" : "s", ban.Reason));
+					}
 				}
-
 				args.Handled = true;
 			}
 		}

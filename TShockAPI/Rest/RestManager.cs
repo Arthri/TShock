@@ -638,25 +638,25 @@ namespace TShockAPI
 			if (TShock.Bans.InsertBan(identifier, reason, args.TokenData.Username, startDate, endDate) != null)
 			{
 				TSPlayer player = null;
-				if (identifier.StartsWith(Identifiers.IP))
+				if (identifier.StartsWith(Ban.Identifiers.IP))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.IP == identifier.Substring(Identifiers.IP.Length));
+					player = TShock.Players.FirstOrDefault(p => p.IP == identifier.Substring(Ban.Identifiers.IP.Length));
 				}
-				else if (identifier.StartsWith(Identifiers.Name))
+				else if (identifier.StartsWith(Ban.Identifiers.Name))
 				{
 					//Character names may not necessarily be unique, so kick all matches
-					foreach (var ply in TShock.Players.Where(p => p.Name == identifier.Substring(Identifiers.Name.Length)))
+					foreach (var ply in TShock.Players.Where(p => p.Name == identifier.Substring(Ban.Identifiers.Name.Length)))
 					{
 						ply.Kick(reason, true);
 					}
 				}
-				else if (identifier.StartsWith(Identifiers.Account))
+				else if (identifier.StartsWith(Ban.Identifiers.Account))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.Account?.Name == identifier.Substring(Identifiers.Account.Length));
+					player = TShock.Players.FirstOrDefault(p => p.Account?.Name == identifier.Substring(Ban.Identifiers.Account.Length));
 				}
-				else if (identifier.StartsWith(Identifiers.UUID))
+				else if (identifier.StartsWith(Ban.Identifiers.UUID))
 				{
-					player = TShock.Players.FirstOrDefault(p => p.UUID == identifier.Substring(Identifiers.UUID.Length));
+					player = TShock.Players.FirstOrDefault(p => p.UUID == identifier.Substring(Ban.Identifiers.UUID.Length));
 				}
 
 				if (player != null)
@@ -673,23 +673,18 @@ namespace TShockAPI
 		[Description("Delete an existing ban entry.")]
 		[Route("/v3/bans/destroy")]
 		[Permission(RestPermissions.restmanagebans)]
-		[Noun("uniqueId", true, "The unique ID of the ban to delete.", typeof(String))]
+		[Noun("identifier", true, "The identifier of the ban to delete.", typeof(String))]
 		[Noun("fullDelete", false, "Whether or not to completely remove the ban from the system.", typeof(bool))]
 		[Token]
 		private object BanDestroyV3(RestRequestArgs args)
 		{
-			string id = args.Parameters["uniqueId"];
-			if (string.IsNullOrWhiteSpace(id))
-				return RestMissingParam("uniqueId");
-
-			if (!int.TryParse(id, out int uniqueId))
-			{
-				return RestInvalidParam("uniqueId");
-			}
+			string identifier = args.Parameters["identifier"];
+			if (string.IsNullOrWhiteSpace(identifier))
+				return RestMissingParam("identifier");
 
 			bool.TryParse(args.Parameters["fullDelete"], out bool fullDelete);
 
-			if (TShock.Bans.RemoveBan(uniqueId, fullDelete))
+			if (TShock.Bans.RemoveBan(identifier, fullDelete))
 			{
 				return RestResponse("Ban removed.");
 			}
@@ -700,20 +695,15 @@ namespace TShockAPI
 		[Description("View the details of a specific ban.")]
 		[Route("/v3/bans/read")]
 		[Permission(RestPermissions.restviewbans)]
-		[Noun("uniqueId", true, "The unique ID to search for.", typeof(String))]
+		[Noun("identifier", true, "The identifier to search for.", typeof(String))]
 		[Token]
 		private object BanInfoV3(RestRequestArgs args)
 		{
-			string id = args.Parameters["uniqueId"];
-			if (string.IsNullOrWhiteSpace(id))
-				return RestMissingParam("uniqueId");
+			string identifier = args.Parameters["identifier"];
+			if (string.IsNullOrWhiteSpace(identifier))
+				return RestMissingParam("identifier");
 
-			if (!int.TryParse(id, out int uniqueId))
-			{
-				return RestInvalidParam("uniqueId");
-			}
-
-			Ban ban = TShock.Bans.GetBanById(uniqueId);
+			Ban ban = TShock.Bans.GetBanByIdentifier(identifier);
 
 			if (ban == null)
 			{
@@ -736,7 +726,7 @@ namespace TShockAPI
 		[Token]
 		private object BanListV3(RestRequestArgs args)
 		{
-			IEnumerable<Ban> bans = TShock.Bans.Bans.Select(kvp => kvp.Value);
+			IEnumerable<Ban> bans = TShock.Bans.GetAllBans();
 
 			var banList = new ArrayList();
 			foreach (var ban in bans)
