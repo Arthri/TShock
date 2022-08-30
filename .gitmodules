@@ -1,4 +1,4 @@
 [submodule "TerrariaServerAPI"]
 	path = TerrariaServerAPI
 	url = https://github.com/Arthri/TSAPI.git
-	branch = general-devel
+	branch = Canis
