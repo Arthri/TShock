@@ -33,6 +33,9 @@ namespace TShockAPI
 	/// </summary>
 	public class UpdateManager
 	{
+
+#if !DISABLE_CHARACTER_MANAGER
+
 		private const string UpdateUrl = "https://update.tshock.co/latest/";
 		private HttpClient _client = new HttpClient();
 
@@ -41,11 +44,16 @@ namespace TShockAPI
 		/// </summary>
 		private int CheckXMinutes = 30;
 
+#endif
+
 		/// <summary>
 		/// Creates a new instance of <see cref="UpdateManager"/> and starts the update thread
 		/// </summary>
 		public UpdateManager()
 		{
+
+#if !DISABLE_UPDATE_MANAGER
+
 			//5 second timeout
 			_client.Timeout = new TimeSpan(0, 0, 5);
 
@@ -64,10 +72,16 @@ namespace TShockAPI
 				IsBackground = true
 			};
 			t.Start();
+
+#endif
+
 		}
 
 		private async Task CheckForUpdatesAsync(object state)
 		{
+
+#if !DISABLE_UPDATE_MANAGER
+
 			try
 			{
 				CheckXMinutes = 30;
@@ -87,6 +101,9 @@ namespace TShockAPI
 				TShock.Log.ConsoleError("Retrying in 5 minutes.");
 				CheckXMinutes = 5;
 			}
+
+#endif
+
 		}
 
 		/// <summary>
@@ -96,11 +113,17 @@ namespace TShockAPI
 		/// <returns></returns>
 		public async Task UpdateCheckAsync(object o)
 		{
+
+#if !DISABLE_UPDATE_MANAGER
+
 			var updates = await ServerIsOutOfDateAsync();
 			if (updates != null)
 			{
 				NotifyAdministrators(updates);
 			}
+
+#endif
+
 		}
 
 		/// <summary>
@@ -109,6 +132,13 @@ namespace TShockAPI
 		/// <returns></returns>
 		private async Task<Dictionary<string, string>> ServerIsOutOfDateAsync()
 		{
+
+#if DISABLE_UPDATE_MANAGER
+
+			return null;
+
+#else
+
 			var resp = await _client.GetAsync(UpdateUrl);
 			if (resp.StatusCode != HttpStatusCode.OK)
 			{
@@ -131,10 +161,16 @@ namespace TShockAPI
 			}
 			
 			return null;
+
+#endif
+
 		}
 
 		private void NotifyAdministrators(Dictionary<string, string> update)
 		{
+
+#if !DISABLE_UPDATE_MANAGER
+
 			var changes = update["changes"].Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
 			NotifyAdministrator(TSPlayer.Server, changes);
 			foreach (TSPlayer player in TShock.Players)
@@ -144,15 +180,24 @@ namespace TShockAPI
 					NotifyAdministrator(player, changes);
 				}
 			}
+
+#endif
+
 		}
 
 		private void NotifyAdministrator(TSPlayer player, string[] changes)
 		{
+
+#if !DISABLE_UPDATE_MANAGER
+
 			player.SendMessage("The server is out of date. Latest version: ", Color.Red);
 			for (int j = 0; j < changes.Length; j++)
 			{
 				player.SendMessage(changes[j], Color.Red);
 			}
+
+#endif
+
 		}
 	}
 }
