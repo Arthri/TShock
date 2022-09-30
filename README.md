@@ -3,6 +3,13 @@
 
 This is the Terraria Server API, the API that [TShock for Terraria](http://github.com/tshock/tshock) runs on.
 
+---
+
+## ⚠ THIS VERSION IS MODIFIED
+A list of modifications is written in [MODIFICATIONS](MODIFICATIONS)
+
+---
+
 ## Features
 
 * Hooks for the most used events & calls used by Terraria.
