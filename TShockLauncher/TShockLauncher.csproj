@@ -28,15 +28,12 @@
 		<!-- the launcher doesnt need the direct OTAPI reference, but since PackageReference[ExcludeFromSingleFile] doesnt work, exclude the assets and copy manually -->
 		<PackageReference Include="OTAPI.Upcoming" Version="3.1.5-alpha" ExcludeAssets="all" GeneratePathProperty="true" />
 		<None Include="$(PkgOTAPI_Upcoming)\lib\net6.0\OTAPI.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
 		<None Include="$(PkgOTAPI_Upcoming)\lib\net6.0\OTAPI.Runtime.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
 		<None Include="$(PkgModFramework)\lib\net6.0\ModFramework.dll">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
 	</ItemGroup>

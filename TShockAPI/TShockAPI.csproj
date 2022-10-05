@@ -49,8 +49,6 @@
   <ItemGroup>
     <None Include="..\prebuilts\HttpServer.dll">
       <Link>HttpServer.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
