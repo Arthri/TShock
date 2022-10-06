@@ -2,4 +2,4 @@
 	path = TerrariaServerAPI
 	url = https://github.com/Arthri/TSAPI.git
 	ignore = dirty
-	branch = Canis
+	branch = general-devel
