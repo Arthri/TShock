@@ -162,7 +162,8 @@ namespace TShockAPI
 					{ PacketTypes.LandGolfBallInCup, HandleLandGolfBallInCup },
 					{ PacketTypes.FishOutNPC, HandleFishOutNPC },
 					{ PacketTypes.FoodPlatterTryPlacing, HandleFoodPlatterTryPlacing },
-					{ PacketTypes.SyncCavernMonsterType, HandleSyncCavernMonsterType }
+					{ PacketTypes.SyncCavernMonsterType, HandleSyncCavernMonsterType },
+					{ PacketTypes.SyncLoadout, HandleSyncLoadout }
 				};
 		}
 
@@ -3583,6 +3584,12 @@ namespace TShockAPI
 			return false;
 		}
 
+		private static bool HasPaintSprayerAbilities(Item item)
+			=> item is not null && item.stack > 0 && (
+			   item.type == ItemID.PaintSprayer ||
+			   item.type == ItemID.ArchitectGizmoPack ||
+			   item.type == ItemID.HandOfCreation);
+
 		private static bool HandlePaintTile(GetDataHandlerArgs args)
 		{
 			var x = args.Data.ReadInt16();
@@ -3599,11 +3606,6 @@ namespace TShockAPI
 				return true;
 			}
 
-			bool hasPaintSprayerAbilities(Item item) =>
-				item != null
-				&& item.stack > 0
-				&& (item.type == ItemID.PaintSprayer || item.type == ItemID.ArchitectGizmoPack);
-
 			// Not selecting paintbrush or paint scraper or the spectre versions? Hacking.
 			if (args.Player.SelectedItem.type != ItemID.PaintRoller &&
 				args.Player.SelectedItem.type != ItemID.PaintScraper &&
@@ -3611,8 +3613,8 @@ namespace TShockAPI
 				args.Player.SelectedItem.type != ItemID.SpectrePaintRoller &&
 				args.Player.SelectedItem.type != ItemID.SpectrePaintScraper &&
 				args.Player.SelectedItem.type != ItemID.SpectrePaintbrush &&
-				!args.Player.Accessories.Any(hasPaintSprayerAbilities) &&
-				!args.Player.Inventory.Any(hasPaintSprayerAbilities))
+				!args.Player.Accessories.Any(HasPaintSprayerAbilities) &&
+				!args.Player.Inventory.Any(HasPaintSprayerAbilities))
 			{
 				TShock.Log.ConsoleDebug("GetDataHandlers / HandlePaintTile rejected select consistency {0}", args.Player.Name);
 				args.Player.SendData(PacketTypes.PaintTile, "", x, y, Main.tile[x, y].color());
@@ -3658,8 +3660,8 @@ namespace TShockAPI
 				args.Player.SelectedItem.type != ItemID.SpectrePaintRoller &&
 				args.Player.SelectedItem.type != ItemID.SpectrePaintScraper &&
 				args.Player.SelectedItem.type != ItemID.SpectrePaintbrush &&
-				!args.Player.Accessories.Any(i => i != null && i.stack > 0 &&
-					(i.type == ItemID.PaintSprayer || i.type == ItemID.ArchitectGizmoPack)))
+				!args.Player.Accessories.Any(HasPaintSprayerAbilities) &&
+				!args.Player.Inventory.Any(HasPaintSprayerAbilities))
 			{
 				TShock.Log.ConsoleDebug("GetDataHandlers / HandlePaintWall rejected selector consistency {0}", args.Player.Name);
 				args.Player.SendData(PacketTypes.PaintWall, "", x, y, Main.tile[x, y].wallColor());
@@ -4157,7 +4159,7 @@ namespace TShockAPI
 
 				if (shouldBan)
 				{
-					if (!args.Player.Ban(banReason, false, "TShock"))
+					if (!args.Player.Ban(banReason, "TShock"))
 					{
 						TShock.Log.ConsoleDebug("GetDataHandlers / HandlePlayerKillMeV2 kicked with difficulty {0} {1}", args.Player.Name, args.TPlayer.difficulty);
 						args.Player.Kick("You died! Normally, you'd be banned.", true, true);
@@ -4323,6 +4325,27 @@ namespace TShockAPI
 			args.Player.Kick("Exploit attempt detected!");
 			TShock.Log.ConsoleDebug($"HandleSyncCavernMonsterType: Player is trying to modify NPC cavernMonsterType; this is a crafted packet! - From {args.Player.Name}");
 			return true;
+		}
+
+		private static bool HandleSyncLoadout(GetDataHandlerArgs args)
+		{
+			var playerIndex = args.Data.ReadInt8();
+			var loadoutIndex = args.Data.ReadInt8();
+
+			// When syncing a player's own loadout index, they then sync it back to us...
+			// So let's only care if the index has actually changed, otherwise we might end up in a loop...
+			if (loadoutIndex == args.TPlayer.CurrentLoadoutIndex)
+				return false;
+
+			if (args.Player.IsBeingDisabled())
+			{
+				TShock.Log.ConsoleDebug("GetDataHandlers / HandleSyncLoadout rejected loadout index sync {0}", args.Player.Name);
+				NetMessage.SendData((int)PacketTypes.SyncLoadout, number: args.Player.Index, number2: args.TPlayer.CurrentLoadoutIndex);
+
+				return true;
+			}
+
+			return false;
 		}
 
 		public enum DoorAction
