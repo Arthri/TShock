@@ -22,31 +22,55 @@ This is the rolling changelog for TShock for Terraria. Use past tense when addin
 * Added preliminary support for Terraria 1.4.4.4. (@SignatureBeef)
 * GrassSpreadEventArgs Color property has been changed from a Byte to a TileColorCache type. (@SignatureBeef)
 * SetDefaultsEventArgs now includes a nullable ItemVariant instance. (@SignatureBeef)
-* Use a string interpolation and escape single quotes when escaping tables (@drunderscore)
+* Use a string interpolation and escape single quotes when escaping tables. (@drunderscore)
 * Removed obsolete resource files `TShockAPI/Resources.resx` and `TShockAPI/Resources.Designer.cs`. (@Arthri)
 * Fixed hardcore and mediumcore not banning on death when settings are enabled. This also alters the TSPlayer.Ban method to remove the force option which is no longer needed. (@SignatureBeef)
-* Plugins and ./bin dependencies are now loaded relative to the launcher, this improves the use of startup files (@SignatureBeef)
+* Plugins and ./bin dependencies are now loaded relative to the launcher, this improves the use of startup files. (@SignatureBeef)
 * Added preliminary support for Terraria 1.4.4.5. (@drunderscore)
   * For clarity sake, we're listing the individual changes to Terraria's version, despite the fact that this version only supports the latest one.
-* Don't allow players to sync loadout index whilst disabled (@drunderscore)
+* Don't allow players to sync loadout index whilst disabled. (@drunderscore)
 * Fixed painting wall/tile being rejected from hand of creation. (@Rozen4334)
 * Added a second `Utils.TryParseTime` method for parsing large, positive time spans. (@punchready)
 * Fixed `/tempgroup` breaking on durations greater than roughly 24 days. (@punchready)
+* Fixed player not being checked for permissions to use the Shellphone (Ocean), Shellphone (Underworld) and Shellphone (Spawn). (@hufang360)
+* Updated to OTAPI 3.1.10-alpha, which allows FreeBSD .NET 6 to use Re-Logic's Linux platform. (@SignatureBeef)
+* Updated Github CI to not tarball files for Windows only. (@PotatoCider)
+* Allow Blood Butcherer and Shimmer buffs to be applied to NPCs by players. (@drunderscore)
+* In OTAPI 3.1.11-alpha, chest stacking was fixed. (@SignatureBeef)
+* In OTAPI 3.1.12-alpha, "server world deletions" were fixed. (@SignatureBeef)
+* Fixed NetTile errors by implementing new packet read/write data. (@SignatureBeef)
+* Fixed Inferno Fork causing kick from rejected abnormal buff. (@Stealownz)
+* Prevented Server Broadcast from executing without a message. (@PackmanDude, @punchready)
+* Added `LiquidType.Shimmer`. (@drunderscore)
+* Made Bouncer allow Bottomless Honey Bucket usage. (@drunderscore)
+* Made Bouncer reject Shimmer placement without bucket or whilst banned. (@drunderscore)
+* Fixed Bouncer rejecting Explosive Bunny critter release when using the Bunny Cannon, if the player had since stopped selecting the Explosive Bunny. (@drunderscore)
+* Allowed breaking of tiles that are in `BreakableWhenPlacing` set. This will allow you to place tiles over other tiles (like piles) properly, without being rejected. (@drunderscore)
+* Allowed the Axe of Regrowth and the Rubblemaker to pass Bouncer checks. (@drunderscore)
+  * The Axe of Regrowth places a `Saplings` where a tree used to be, which previously failed.
+  * The Rubblemaker places rubble (which are echo piles), of varying styles, which previously failed.
+* Fixed `HandlePlayerAddBuff` data handler always being marked as `Handled`, and therefore never allowing the `PlayerAddBuff` to be sent to anyone. (@drunderscore)
+* Improved `OnPlayerBuff` logic to properly handle players adding buffs to other players. (@drunderscore)
+  * Check if the target ID is within bounds as the first thing to check.
+  * Check if the buff type being applied is within bounds.
+  * Introduce `AddPlayerBuffWhitelist` (replacing `WhitelistBuffMaxTime`), which allows us to specify the maximum amount of ticks a buff can be applied for, and if it can be applied without the target being in PvP.
+  * When rejecting from `OnPlayerBuff`, instead of sending a `PlayerAddBuff` packet with the rejected buff (essentially a no-op, as the sender implicitly applies the buff to the target, and causes desync as the buff was rejected), send a `PlayerBuff` to re-sync the target's buffs, without the buff we just rejected.
 
 ## TShock 4.5.18
-* Fixed `TSPlayer.GiveItem` not working if the player is in lava. (@gohjoseph)
+* Fixed `TSPlayer.GiveItem` not working if the player is in lava. (@PotatoCider)
 * Only allow using Teleportation Potions, Magic Conch, and Demon Conch whilst holding them. (@drunderscore)
 * Updated server startup language to be more clear when encountering a fatal startup error. Now, the server gives more context as to what happened so that there's a better chance of people being able to help themselves. (@hakusaro)
-* Added `-worldevil <type>` command line argument (@NotGeri)
+* Added `-worldevil <type>` command line argument. (@NotGeri)
 * Added PlayerHasBuildPermission hook to PlayerHooks. (@AnzhelikaO, @Killia0)
 * Fixed an exploit in which the Ice Block deletion allowance from the Ice Rod bypassed region protection, allowing for deleting all tiles in a protected region and/or replacing them with Ice Blocks. (@punchready)
 * Changed SendTileRect handling from a denylist to an allowlist with stricter checks. This prevents essentially all exploits involving this packet. Most notably this stops people from placing arbitrary tiles with arbitrary framing values, which are the root of most exploits. (@punchready)
 * Removed the config options `TileRectangleSizeThreshold` and `KickOnTileRectangleSizeThresholdBroken` because they are made obsolete by the new system, which will only allow valid rectangle sizes (at a maximum of only 4 by 4 tiles in 1.4.3.6). (@punchready)
 * Bumped Newtonsoft Json to 13.0.1. (@dependabot)
+* Allow the Cool Whip to apply `CoolWhipNPCDebuff` for `240` ticks, fixing abnormal NPC buff add rejects in Bouncer. (@drunderscore)
 
 ## TShock 4.5.17
-* Fixed duplicate characters (twins) after repeatedly logging in as the same character due to connection not being immediately closed during `NetHooks_NameCollision`. (@gohjoseph)
-* Fixed mobs not dropping picked up coins. (@gohjoseph)
+* Fixed duplicate characters (twins) after repeatedly logging in as the same character due to connection not being immediately closed during `NetHooks_NameCollision`. (@PotatoCider)
+* Fixed mobs not dropping picked up coins. (@PotatoCider)
 
 ## TShock 4.5.16
 * Added preliminary support for Terraria 1.4.3.6. (@SignatureBeef, @hakusaro)

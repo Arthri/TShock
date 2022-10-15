@@ -79,20 +79,8 @@ namespace TShockAPI
 	{
 		private static Dictionary<PacketTypes, GetDataHandlerDelegate> GetDataHandlerDelegates;
 
-		public static int[] WhitelistBuffMaxTime;
-
 		public static void InitGetDataHandler()
 		{
-			#region Blacklists
-
-			WhitelistBuffMaxTime = new int[Main.maxBuffTypes];
-			WhitelistBuffMaxTime[20] = 600;
-			WhitelistBuffMaxTime[0x18] = 1200;
-			WhitelistBuffMaxTime[0x1f] = 120;
-			WhitelistBuffMaxTime[0x27] = 420;
-
-			#endregion Blacklists
-
 			GetDataHandlerDelegates = new Dictionary<PacketTypes, GetDataHandlerDelegate>
 				{
 					{ PacketTypes.PlayerInfo, HandlePlayerInfo },
@@ -1296,6 +1284,7 @@ namespace TShockAPI
 			Water = 0,
 			Lava = 1,
 			Honey = 2,
+			Shimmer = 3,
 			Removal = 255 //@Olink: lets hope they never invent 255 fluids or decide to also use this :(
 		}
 
@@ -3466,8 +3455,7 @@ namespace TShockAPI
 			if (OnPlayerBuff(args.Player, args.Data, id, type, time))
 				return true;
 
-			args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
-			return true;
+			return false;
 		}
 
 		private static bool HandleUpdateNPCHome(GetDataHandlerArgs args)
@@ -3828,9 +3816,11 @@ namespace TShockAPI
 						return true;
 					}
 					break;
-				case 1: // Magic Conch
+				case 1: // Magic Conch or Shellphone (Ocean)
 					if (args.Player.ItemInHand.type != ItemID.MagicConch &&
-					    args.Player.SelectedItem.type != ItemID.MagicConch)
+						args.Player.SelectedItem.type != ItemID.MagicConch &&
+						args.Player.ItemInHand.type != ItemID.ShellphoneOcean &&
+						args.Player.SelectedItem.type != ItemID.ShellphoneOcean)
 					{
 						TShock.Log.ConsoleDebug("GetDataHandlers / HandleTeleportationPotion rejected not holding the correct item {0} {1}", args.Player.Name, type);
 						return true;
@@ -3838,13 +3828,22 @@ namespace TShockAPI
 
 					if (!args.Player.HasPermission(Permissions.magicconch))
 					{
-						Fail("the Magic Conch");
+						if (args.Player.ItemInHand.type == ItemID.ShellphoneOcean || args.Player.SelectedItem.type == ItemID.ShellphoneOcean)
+						{
+							Fail("the Shellphone (Ocean)");
+						}
+						else
+						{
+							Fail("the Magic Conch");
+						}
 						return true;
 					}
 					break;
-				case 2: // Demon Conch
+				case 2: // Demon Conch or Shellphone (Underworld)
 					if (args.Player.ItemInHand.type != ItemID.DemonConch &&
-					    args.Player.SelectedItem.type != ItemID.DemonConch)
+						args.Player.SelectedItem.type != ItemID.DemonConch &&
+						args.Player.ItemInHand.type != ItemID.ShellphoneHell &&
+						args.Player.SelectedItem.type != ItemID.ShellphoneHell)
 					{
 						TShock.Log.ConsoleDebug("GetDataHandlers / HandleTeleportationPotion rejected not holding the correct item {0} {1}", args.Player.Name, type);
 						return true;
@@ -3852,7 +3851,21 @@ namespace TShockAPI
 
 					if (!args.Player.HasPermission(Permissions.demonconch))
 					{
-						Fail("the Demon Conch");
+						if (args.Player.ItemInHand.type == ItemID.ShellphoneHell || args.Player.SelectedItem.type == ItemID.ShellphoneHell)
+						{
+							Fail("the Shellphone (Underworld)");
+						}
+						else
+						{
+							Fail("the Demon Conch");
+						}
+						return true;
+					}
+					break;
+				case 3: // Shellphone (Spawn)
+					if (args.Player.ItemInHand.type != ItemID.ShellphoneSpawn && args.Player.SelectedItem.type != ItemID.ShellphoneSpawn)
+					{
+						TShock.Log.ConsoleDebug("GetDataHandlers / HandleTeleportationPotion rejected not holding the correct item {0} {1}", args.Player.Name, type);
 						return true;
 					}
 					break;

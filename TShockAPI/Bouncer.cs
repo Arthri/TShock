@@ -45,6 +45,27 @@ namespace TShockAPI
 		internal Handlers.SyncTilePickingHandler SyncTilePickingHandler { get; private set; }
 
 		/// <summary>
+		/// A class that represents the limits for a particular buff when a client applies it with PlayerAddBuff.
+		/// </summary>
+		internal class BuffLimit
+		{
+			/// <summary>
+			/// How many ticks at the maximum a player can apply this to another player for.
+			/// </summary>
+			public int MaxTicks { get; set; }
+			/// <summary>
+			/// Can this buff be added without the receiver being hostile (PvP)
+			/// </summary>
+			public bool CanBeAddedWithoutHostile { get; set; }
+			/// <summary>
+			/// Can this buff only be applied to the sender?
+			/// </summary>
+			public bool CanOnlyBeAppliedToSender { get; set; }
+		}
+
+		internal static BuffLimit[] PlayerAddBuffWhitelist;
+
+		/// <summary>
 		/// Represents a place style corrector.
 		/// </summary>
 		/// <param name="player">The player placing the tile.</param>
@@ -231,6 +252,172 @@ namespace TShockAPI
 						return actualItemPlaceStyle;
 					}
 				});
+
+			#region PlayerAddBuff Whitelist
+
+			PlayerAddBuffWhitelist = new BuffLimit[Main.maxBuffTypes];
+			PlayerAddBuffWhitelist[BuffID.Poisoned] = new BuffLimit
+			{
+				MaxTicks = 60 * 60
+			};
+			PlayerAddBuffWhitelist[BuffID.OnFire] = new BuffLimit
+			{
+				MaxTicks = 60 * 20
+			};
+			PlayerAddBuffWhitelist[BuffID.Confused] = new BuffLimit
+			{
+				MaxTicks = 60 * 4
+			};
+			PlayerAddBuffWhitelist[BuffID.CursedInferno] = new BuffLimit
+			{
+				MaxTicks = 60 * 7
+			};
+			PlayerAddBuffWhitelist[BuffID.Wet] = new BuffLimit
+			{
+				MaxTicks = 60 * 30,
+				// The Water Gun can be shot at other players and inflict Wet while not in PvP
+				CanBeAddedWithoutHostile = true
+			};
+			PlayerAddBuffWhitelist[BuffID.Ichor] = new BuffLimit
+			{
+				MaxTicks = 60 * 20
+			};
+			PlayerAddBuffWhitelist[BuffID.Venom] = new BuffLimit
+			{
+				MaxTicks = 60 * 30
+			};
+			PlayerAddBuffWhitelist[BuffID.GelBalloonBuff] = new BuffLimit
+			{
+				MaxTicks = 60 * 30,
+				// The Sparkle Slime Balloon inflicts this while not in PvP
+				CanBeAddedWithoutHostile = true
+			};
+			PlayerAddBuffWhitelist[BuffID.Frostburn] = new BuffLimit
+			{
+				MaxTicks = 60 * 8
+			};
+			PlayerAddBuffWhitelist[BuffID.Campfire] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.Sunflower] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.WaterCandle] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleEndurance1] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleEndurance2] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleEndurance3] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleMight1] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleMight2] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.BeetleMight3] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true,
+			};
+			PlayerAddBuffWhitelist[BuffID.SolarShield1] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = false,
+			};
+			PlayerAddBuffWhitelist[BuffID.SolarShield2] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = false,
+			};
+			PlayerAddBuffWhitelist[BuffID.SolarShield3] = new BuffLimit
+			{
+				MaxTicks = 5,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = false,
+			};
+			PlayerAddBuffWhitelist[BuffID.MonsterBanner] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.HeartLamp] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.PeaceCandle] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.StarInBottle] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.CatBast] = new BuffLimit
+			{
+				MaxTicks = 2,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.OnFire3] = new BuffLimit
+			{
+				MaxTicks = 60 * 5,
+				CanBeAddedWithoutHostile = false,
+				CanOnlyBeAppliedToSender = false
+			};
+			PlayerAddBuffWhitelist[BuffID.HeartyMeal] = new BuffLimit
+			{
+				MaxTicks = 60 * 7,
+				CanBeAddedWithoutHostile = true,
+				CanOnlyBeAppliedToSender = true
+			};
+			PlayerAddBuffWhitelist[BuffID.Frostburn2] = new BuffLimit
+			{
+				MaxTicks = 60 * 7,
+				CanBeAddedWithoutHostile = false,
+				CanOnlyBeAppliedToSender = false
+			};
+
+			#endregion Whitelist
 		}
 
 		internal void OnGetSection(object sender, GetDataHandlers.GetSectionEventArgs args)
@@ -510,10 +697,16 @@ namespace TShockAPI
 					// If the tile is a pickaxe tile and they aren't selecting a pickaxe, they're hacking.
 					// Item frames can be modified without pickaxe tile.
 					// also add an exception for snake coils, they can be removed when the player places a new one or after x amount of time
+					// If the tile is part of the breakable when placing set, it might be getting broken by a placement.
 					else if (tile.type != TileID.ItemFrame && tile.type != TileID.MysticSnakeRope
-						&& !Main.tileAxe[tile.type] && !Main.tileHammer[tile.type] && tile.wall == 0 && args.Player.TPlayer.mount.Type != 8 && selectedItem.pick == 0 && selectedItem.type != ItemID.GravediggerShovel && !ItemID.Sets.Explosives[selectedItem.netID] && args.Player.RecentFuse == 0)
+					                                       && !Main.tileAxe[tile.type] && !Main.tileHammer[tile.type] && tile.wall == 0 &&
+					                                       args.Player.TPlayer.mount.Type != MountID.Drill && selectedItem.pick == 0 &&
+					                                       selectedItem.type != ItemID.GravediggerShovel &&
+					                                       !ItemID.Sets.Explosives[selectedItem.netID] && args.Player.RecentFuse == 0
+					                                       && !TileID.Sets.BreakableWhenPlacing[tile.type])
 					{
-						TShock.Log.ConsoleDebug("Bouncer / OnTileEdit rejected from (pick) {0} {1} {2}", args.Player.Name, action, editData);
+						TShock.Log.ConsoleDebug("Bouncer / OnTileEdit rejected from (pick) {0} {1} {2}", args.Player.Name, action,
+							editData);
 						args.Player.SendTileSquareCentered(tileX, tileY, 4);
 						args.Handled = true;
 						return;
@@ -1544,6 +1737,14 @@ namespace TShockAPI
 				{
 					bucket = 6;
 				}
+				else if (selectedItemType == ItemID.BottomlessHoneyBucket)
+				{
+					bucket = 7;
+				}
+				else if (selectedItemType == ItemID.BottomlessShimmerBucket)
+				{
+					bucket = 8;
+				}
 
 				if (!wasThereABombNearby && type == LiquidType.Lava && !(bucket == 2 || bucket == 0 || bucket == 5 || bucket == 6))
 				{
@@ -1585,7 +1786,7 @@ namespace TShockAPI
 					return;
 				}
 
-				if (!wasThereABombNearby && type == LiquidType.Honey && !(bucket == 3 || bucket == 0))
+				if (!wasThereABombNearby && type == LiquidType.Honey && !(bucket == 3 || bucket == 0 || bucket == 7))
 				{
 					TShock.Log.ConsoleDebug("Bouncer / OnLiquidSet rejected bucket check 4 from {0}", args.Player.Name);
 					args.Player.SendErrorMessage("You do not have permission to perform this action.");
@@ -1600,6 +1801,27 @@ namespace TShockAPI
 					TShock.Log.ConsoleDebug("Bouncer / OnLiquidSet rejected bucket check 5 from {0}", args.Player.Name);
 					args.Player.SendErrorMessage("You do not have permission to perform this action.");
 					args.Player.Disable("Using banned honey bucket without permissions", DisableFlags.WriteToLogAndConsole);
+					args.Player.SendTileSquareCentered(tileX, tileY, 1);
+					args.Handled = true;
+					return;
+				}
+
+				if (!wasThereABombNearby && type == LiquidType.Shimmer && bucket != 8)
+				{
+					TShock.Log.ConsoleDebug("Bouncer / OnLiquidSet rejected bucket check 6 from {0}", args.Player.Name);
+					args.Player.SendErrorMessage("You do not have permission to perform this action.");
+					args.Player.Disable("Spreading shimmer without holding a honey bucket", DisableFlags.WriteToLogAndConsole);
+					args.Player.SendTileSquareCentered(tileX, tileY, 1);
+					args.Handled = true;
+					return;
+				}
+
+				if (!wasThereABombNearby && type == LiquidType.Shimmer &&
+				    TShock.ItemBans.DataModel.ItemIsBanned("Bottomless Shimmer Bucket", args.Player))
+				{
+					TShock.Log.ConsoleDebug("Bouncer / OnLiquidSet rejected bucket check 7 from {0}", args.Player.Name);
+					args.Player.SendErrorMessage("You do not have permission to perform this action.");
+					args.Player.Disable("Using banned bottomless shimmer bucket without permissions", DisableFlags.WriteToLogAndConsole);
 					args.Player.SendTileSquareCentered(tileX, tileY, 1);
 					args.Handled = true;
 					return;
@@ -1640,9 +1862,24 @@ namespace TShockAPI
 			int type = args.Type;
 			int time = args.Time;
 
+			if (id >= Main.maxPlayers)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected player cap from {0}", args.Player.Name);
+				args.Handled = true;
+				return;
+			}
+
 			if (TShock.Players[id] == null)
 			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected null check");
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected null check from {0}", args.Player.Name);
+				args.Handled = true;
+				return;
+			}
+
+			if (type >= Main.maxBuffTypes)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected invalid buff type {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
 				args.Handled = true;
 				return;
 			}
@@ -1650,31 +1887,7 @@ namespace TShockAPI
 			if (args.Player.IsBeingDisabled())
 			{
 				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected disabled from {0}", args.Player.Name);
-				args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
-				args.Handled = true;
-				return;
-			}
-
-			if (id >= Main.maxPlayers)
-			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected player cap from {0}", args.Player.Name);
-				args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
-				args.Handled = true;
-				return;
-			}
-
-			if (!TShock.Players[id].TPlayer.hostile || !Main.pvpBuff[type])
-			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected hostile/pvp from {0}", args.Player.Name);
-				args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
-				args.Handled = true;
-				return;
-			}
-
-			if (!args.Player.IsInRange(TShock.Players[id].TileX, TShock.Players[id].TileY, 50))
-			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected range check from {0}", args.Player.Name);
-				args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
 				args.Handled = true;
 				return;
 			}
@@ -1682,15 +1895,51 @@ namespace TShockAPI
 			if (args.Player.IsBouncerThrottled())
 			{
 				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected throttled from {0}", args.Player.Name);
-				args.Player.SendData(PacketTypes.PlayerAddBuff, "", id);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
 				args.Handled = true;
 				return;
 			}
 
-			if (WhitelistBuffMaxTime[type] > 0 && time <= WhitelistBuffMaxTime[type])
+			var targetPlayer = TShock.Players[id];
+			var buffLimit = PlayerAddBuffWhitelist[type];
+
+			if (!args.Player.IsInRange(targetPlayer.TileX, targetPlayer.TileY, 50))
 			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected buff time whitelists from {0}", args.Player.Name);
-				args.Handled = false;
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected range check from {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
+				args.Handled = true;
+				return;
+			}
+
+			if (buffLimit == null)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected non-whitelisted buff {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
+				args.Handled = true;
+				return;
+			}
+
+			if (buffLimit.CanOnlyBeAppliedToSender && id != args.Player.Index)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected applied to non-sender from {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
+				args.Handled = true;
+				return;
+			}
+
+			if (!buffLimit.CanBeAddedWithoutHostile && !targetPlayer.TPlayer.hostile)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected hostile/pvp from {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
+				args.Handled = true;
+				return;
+			}
+
+			if (time <= 0 || time > buffLimit.MaxTicks)
+			{
+				TShock.Log.ConsoleDebug("Bouncer / OnPlayerBuff rejected time too long from {0}", args.Player.Name);
+				args.Player.SendData(PacketTypes.PlayerBuff, "", id);
+				args.Handled = true;
 				return;
 			}
 		}
@@ -1739,7 +1988,8 @@ namespace TShockAPI
 				if (npc.townNPC && npc.netID != NPCID.Guide && npc.netID != NPCID.Clothier)
 				{
 					if (type != BuffID.Lovestruck && type != BuffID.Stinky && type != BuffID.DryadsWard &&
-						type != BuffID.Wet && type != BuffID.Slimed && type != BuffID.GelBalloonBuff && type != BuffID.Frostburn2)
+						type != BuffID.Wet && type != BuffID.Slimed && type != BuffID.GelBalloonBuff && type != BuffID.Frostburn2 &&
+						type != BuffID.Shimmer)
 					{
 						detectedNPCBuffTimeCheat = true;
 					}
@@ -1869,14 +2119,48 @@ namespace TShockAPI
 				return;
 			}
 
-			// if released npc not from its item (from crafted packet)
-			// e.g. using bunny item to release golden bunny 
-			if (args.Player.TPlayer.lastVisualizedSelectedItem.makeNPC != type && args.Player.TPlayer.lastVisualizedSelectedItem.placeStyle != style)
+			void rejectForCritterNotReleasedFromItem()
 			{
 				TShock.Log.ConsoleDebug("Bouncer / OnReleaseNPC released different critter from {0}", args.Player.Name);
 				args.Player.Kick("Released critter was not from its item.", true);
 				args.Handled = true;
-				return;
+			}
+
+			// if released npc not from its item (from crafted packet)
+			// e.g. using bunny item to release golden bunny
+			if (args.Player.TPlayer.lastVisualizedSelectedItem.makeNPC != type || args.Player.TPlayer.lastVisualizedSelectedItem.placeStyle != style)
+			{
+				// If the critter is an Explosive Bunny, check if we've recently created an Explosive Bunny projectile.
+				// If we have, check if the critter we are trying to create is within range of the projectile
+				// If we have at least one of those, then this wasn't a crafted packet, but simply a delayed critter release from an
+				// Explosive Bunny projectile.
+				if (type == NPCID.ExplosiveBunny)
+				{
+					bool areAnyBunnyProjectilesInRange;
+
+					lock (args.Player.RecentlyCreatedProjectiles)
+					{
+						areAnyBunnyProjectilesInRange = args.Player.RecentlyCreatedProjectiles.Any(projectile =>
+						{
+							if (projectile.Type != ProjectileID.ExplosiveBunny)
+								return false;
+
+							var projectileInstance = Main.projectile[projectile.Index];
+							return projectileInstance.active && projectileInstance.WithinRange(new Vector2(args.X, args.Y), 32.0f);
+						});
+					}
+
+					if (!areAnyBunnyProjectilesInRange)
+					{
+						rejectForCritterNotReleasedFromItem();
+						return;
+					}
+				}
+				else
+				{
+					rejectForCritterNotReleasedFromItem();
+					return;
+				}
 			}
 
 			if (args.Player.IsBouncerThrottled())
@@ -1925,13 +2209,6 @@ namespace TShockAPI
 				return;
 			}
 
-			if (args.Player.SelectedItem.placeStyle != style)
-			{
-				TShock.Log.ConsoleError(string.Format("Bouncer / OnPlaceObject rejected object placement with invalid style from {0}", args.Player.Name));
-				args.Handled = true;
-				return;
-			}
-
 			//style 52 and 53 are used by ItemID.Fake_newchest1 and ItemID.Fake_newchest2
 			//These two items cause localised lag and rendering issues
 			if (type == TileID.FakeContainers && (style == 52 || style == 53))
@@ -1968,15 +2245,48 @@ namespace TShockAPI
 				return;
 			}
 
-			// This is necessary to check in order to prevent special tiles such as
-			// queen bee larva, paintings etc that use this packet from being placed
-			// without selecting the right item.
-			if (type != args.Player.TPlayer.inventory[args.Player.TPlayer.selectedItem].createTile)
+			if (args.Player.SelectedItem.type is ItemID.RubblemakerSmall or ItemID.RubblemakerMedium or ItemID.RubblemakerLarge)
 			{
-				TShock.Log.ConsoleDebug("Bouncer / OnPlaceObject rejected awkward tile creation/selection from {0}", args.Player.Name);
-				args.Player.SendTileSquareCentered(x, y, 4);
-				args.Handled = true;
-				return;
+				if (type != TileID.LargePilesEcho && type != TileID.LargePiles2Echo && type != TileID.SmallPiles2x1Echo &&
+				    type != TileID.SmallPiles1x1Echo && type != TileID.PlantDetritus3x2Echo && type != TileID.PlantDetritus2x2Echo)
+				{
+					TShock.Log.ConsoleDebug("Bouncer / OnPlaceObject rejected rubblemaker I can't believe it's not rubble! from {0}",
+						args.Player.Name);
+					args.Player.SendTileSquareCentered(x, y, 4);
+					args.Handled = true;
+					return;
+				}
+			}
+			else if(args.Player.SelectedItem.type == ItemID.AcornAxe)
+			{
+				if (type != TileID.Saplings)
+				{
+					TShock.Log.ConsoleDebug("Bouncer / OnPlaceObject rejected Axe of Regrowth only places saplings {0}", args.Player.Name);
+					args.Player.SendTileSquareCentered(x, y, 4);
+					args.Handled = true;
+					return;
+				}
+			}
+			else
+			{
+				// This is necessary to check in order to prevent special tiles such as
+				// queen bee larva, paintings etc that use this packet from being placed
+				// without selecting the right item.
+				if (type != args.Player.TPlayer.inventory[args.Player.TPlayer.selectedItem].createTile)
+				{
+					TShock.Log.ConsoleDebug("Bouncer / OnPlaceObject rejected awkward tile creation/selection from {0}", args.Player.Name);
+					args.Player.SendTileSquareCentered(x, y, 4);
+					args.Handled = true;
+					return;
+				}
+
+				if (args.Player.SelectedItem.placeStyle != style)
+				{
+					TShock.Log.ConsoleError(string.Format("Bouncer / OnPlaceObject rejected object placement with invalid style from {0}", args.Player.Name));
+					args.Player.SendTileSquareCentered(x, y, 4);
+					args.Handled = true;
+					return;
+				}
 			}
 
 			TileObjectData tileData = TileObjectData.GetTileData(type, style, 0);
@@ -2526,10 +2836,13 @@ namespace TShockAPI
 			{ BuffID.RainbowWhipNPCDebuff, 240  },  // BuffID: 316
 			{ BuffID.MaceWhipNPCDebuff, 240  },     // BuffID: 319
 			{ BuffID.GelBalloonBuff, 1800  },       // BuffID: 320
-			{ BuffID.OnFire3, 360 },                // BuffID: 323
+			{ BuffID.OnFire3, 960 },                // BuffID: 323
 			{ BuffID.Frostburn2, 900 },             // BuffID: 324
 			{ BuffID.BoneWhipNPCDebuff, 240 },      // BuffID: 326
-			{ BuffID.TentacleSpike, 540 }           // BuffID: 337
+			{ BuffID.TentacleSpike, 540 },          // BuffID: 337
+			{ BuffID.CoolWhipNPCDebuff, 240 },      // BuffID: 340
+			{ BuffID.BloodButcherer, 540 },         // BuffID: 344
+			{ BuffID.Shimmer, 100 },		// BuffID: 353
 		};
 
 		/// <summary>
