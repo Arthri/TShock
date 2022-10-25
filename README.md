@@ -28,8 +28,6 @@ A list of modifications is written in [MODIFICATIONS](https://github.com/Arthri/
 
 All changes on `general-devel` will be mirrored to the other two branches if possible
 
-----
-
 ## Developing TShock
 
 If you want to contribute to TShock by sending a pull request or customize it to suit your own sparkly desires, this is the best starting point. By the end of this, you'll be able to build TShock from source, start to finish. More than that, though, you'll know how to start on the path of becoming an expert TShock developer.
