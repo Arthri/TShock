@@ -21,16 +21,19 @@ global using static TShockAPI.I18n;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using GetText;
+using Terraria.Initializers;
+using Terraria.Localization;
 
 namespace TShockAPI
 {
-	static class I18n {
+	static class I18n
+	{
 		static string TranslationsDirectory => Path.Combine(AppContext.BaseDirectory, "i18n");
 		static CultureInfo TranslationCultureInfo
 		{
-			get
-			{
+			get {
 				// cross-platform mapping of cultureinfos can be a bit screwy, so give our users
 				// the chance to explicitly spell out which translation they would like to use.
 				// this is an environment variable instead of a flag because this needs to be
@@ -39,6 +42,24 @@ namespace TShockAPI
 				{
 					return new CultureInfo(overrideLang);
 				}
+
+				static CultureInfo Redirect(CultureInfo cultureInfo)
+					=> cultureInfo.Name == "zh-Hans" ? new CultureInfo("zh-CN") : cultureInfo;
+
+				if (Terraria.Program.LaunchParameters.TryGetValue("-lang", out var langArg)
+				    && int.TryParse(langArg, out var langId)) {
+					if (GameCulture._legacyCultures.TryGetValue(langId, out var culture)) {
+						return Redirect(culture.CultureInfo);
+					}
+				}
+
+				if (Terraria.Program.LaunchParameters.TryGetValue("-language", out var languageArg)) {
+					var culture = GameCulture._legacyCultures.Values.SingleOrDefault(c => c.Name == languageArg);
+					if (culture != null) {
+						return Redirect(culture.CultureInfo);
+					}
+				}
+
 				return CultureInfo.CurrentUICulture;
 			}
 		}
@@ -90,7 +111,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetPluralString(FormattableStringAdapter text, FormattableStringAdapter pluralText, long n)
 		{
-			return C.GetString(text, pluralText, n);
+			return C.GetPluralString(text, pluralText, n);
 		}
 
 		/// <summary>
@@ -103,7 +124,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetPluralString(FormattableString text, FormattableString pluralText, long n)
 		{
-			return C.GetString(text, pluralText, n);
+			return C.GetPluralString(text, pluralText, n);
 		}
 
 		/// <summary>
@@ -117,7 +138,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetPluralString(FormattableStringAdapter text, FormattableStringAdapter pluralText, long n, params object[] args)
 		{
-			return C.GetString(text, pluralText, n, args);
+			return C.GetPluralString(text, pluralText, n, args);
 		}
 
 		/// <summary>
@@ -168,7 +189,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetParticularPluralString(string context, FormattableStringAdapter text, FormattableStringAdapter pluralText, long n)
 		{
-			return C.GetParticularString(context, text, pluralText, n);
+			return C.GetParticularPluralString(context, text, pluralText, n);
 		}
 
 		/// <summary>
@@ -182,7 +203,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetParticularPluralString(string context, FormattableString text, FormattableString pluralText, long n)
 		{
-			return C.GetParticularString(context, text, pluralText, n);
+			return C.GetParticularPluralString(context, text, pluralText, n);
 		}
 
 		/// <summary>
@@ -197,7 +218,7 @@ namespace TShockAPI
 		/// <returns>Translated text.</returns>
 		public static string GetParticularPluralString(string context, FormattableStringAdapter text, FormattableStringAdapter pluralText, long n, params object[] args)
 		{
-			return C.GetParticularString(context, text, pluralText, n, args);
+			return C.GetParticularPluralString(context, text, pluralText, n, args);
 		}
 		#endregion
 	}

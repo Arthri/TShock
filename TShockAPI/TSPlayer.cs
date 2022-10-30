@@ -981,7 +981,7 @@ namespace TShockAPI
 			get
 			{
 				return RealPlayer
-				       && (Netplay.Clients[Index] != null && Netplay.Clients[Index].IsActive && !Netplay.Clients[Index].PendingTermination);
+					   && (Netplay.Clients[Index] != null && Netplay.Clients[Index].IsActive && !Netplay.Clients[Index].PendingTermination);
 			}
 		}
 
@@ -1461,7 +1461,7 @@ namespace TShockAPI
 		}
 
 		/// <summary>
-		/// Sends a rectangle of tiles at a location with the given length and width. 
+		/// Sends a rectangle of tiles at a location with the given length and width.
 		/// </summary>
 		/// <param name="x">The x coordinate the rectangle will begin at</param>
 		/// <param name="y">The y coordinate the rectangle will begin at</param>
@@ -1508,6 +1508,115 @@ namespace TShockAPI
 		/// <param name="stack">The item stack.</param>
 		/// <param name="prefix">The item prefix.</param>
 		public virtual void GiveItem(int type, int stack, int prefix = 0)
+		{
+			if (TShock.ServerSideCharacterConfig.Settings.GiveItemsDirectly)
+				GiveItemDirectly(type, stack, prefix);
+			else
+				GiveItemByDrop(type, stack, prefix);
+		}
+
+		private Item EmptySentinelItem = new Item();
+
+		private bool Depleted(Item item)
+			=> item.type == 0 || item.stack == 0;
+
+		private void GiveItemDirectly(int type, int stack, int prefix)
+		{
+			if (ItemID.Sets.IsAPickup[type] || !Main.ServerSideCharacter || this.IsDisabledForSSC)
+			{
+				GiveItemByDrop(type, stack, prefix);
+				return;
+			}
+
+			var item = new Item();
+			item.netDefaults(type);
+			item.stack = stack;
+			item.prefix = (byte)prefix;
+
+			if (item.IsACoin)
+				for (int slot = -4; slot < 50; slot++)
+					if (Depleted(item = GiveItemDirectly_FillIntoOccupiedSlot(item, slot < 0 ? slot + 54 : slot)))
+						return;
+
+			if (item.FitsAmmoSlot())
+				if (Depleted(item = GiveItem_FillAmmo(item)))
+					return;
+
+			for (int slot = 0; slot < 50; slot++)
+				if (Depleted(item = GiveItemDirectly_FillIntoOccupiedSlot(item, slot)))
+					return;
+
+			if (!item.IsACoin && item.useStyle != 0)
+				for (int slot = 0; slot < 10; slot++)
+					if (Depleted(item = GiveItemDirectly_FillEmptyInventorySlot(item, slot)))
+						return;
+
+			int lastSlot = item.IsACoin ? 54 : 50;
+			for (int slot = lastSlot - 1; slot >= 0; slot--)
+				if (Depleted(item = GiveItemDirectly_FillEmptyInventorySlot(item, slot)))
+					return;
+
+			// oh no, i can't give... guess i gotta spill it on the floor
+			GiveItemByDrop(type, stack, prefix);
+		}
+
+		private void SendItemSlotPacketFor(int slot)
+		{
+			int prefix = this.TPlayer.inventory[slot].prefix;
+			NetMessage.SendData(5, this.Index, -1, null, this.Index, slot, prefix, 0f, 0, 0, 0);
+		}
+
+		private Item GiveItem_FillAmmo(Item item)
+		{
+			var inv = this.TPlayer.inventory;
+
+			for (int i = 54; i < 58; i++)
+				if (Depleted(item = GiveItemDirectly_FillIntoOccupiedSlot(item, i)))
+					return EmptySentinelItem;
+
+			if (!item.CanFillEmptyAmmoSlot())
+				return item;
+
+			for (int i = 54; i < 58; i++)
+				if (GiveItemDirectly_FillEmptyInventorySlot(item, i) == EmptySentinelItem)
+					return EmptySentinelItem;
+
+			return item;
+		}
+
+		private Item GiveItemDirectly_FillIntoOccupiedSlot(Item item, int slot)
+		{
+			var inv = this.TPlayer.inventory;
+			if (inv[slot].type <= 0 || inv[slot].stack >= inv[slot].maxStack || !item.IsTheSameAs(inv[slot]))
+				return item;
+
+			if (item.stack + inv[slot].stack <= inv[slot].maxStack)
+			{
+				inv[slot].stack += item.stack;
+				SendItemSlotPacketFor(slot);
+				return EmptySentinelItem;
+			}
+
+			var newItem = item.DeepClone();
+			newItem.stack -= inv[slot].maxStack - inv[slot].stack;
+			inv[slot].stack = inv[slot].maxStack;
+			SendItemSlotPacketFor(slot);
+
+			return newItem;
+		}
+
+		private Item GiveItemDirectly_FillEmptyInventorySlot(Item item, int slot)
+		{
+			var inv = this.TPlayer.inventory;
+			if (inv[slot].type != 0)
+				return item;
+
+			inv[slot] = item;
+			SendItemSlotPacketFor(slot);
+			return EmptySentinelItem;
+		}
+
+		private void GiveItemByDrop(int type, int stack, int prefix)
 		{
 			int itemIndex = Item.NewItem(new EntitySource_DebugCommand(), (int)X, (int)Y, TPlayer.width, TPlayer.height, type, stack, true, prefix, true);
 			Main.item[itemIndex].playerIndexTheItemIsReservedFor = this.Index;
@@ -1722,7 +1831,7 @@ namespace TShockAPI
 			Main.player[Index].team = team;
 			NetMessage.SendData((int)PacketTypes.PlayerTeam, -1, -1, NetworkText.Empty, Index);
 		}
-		
+
 		/// <summary>
 		/// Sets the player's pvp.
 		/// </summary>
@@ -1836,10 +1945,10 @@ namespace TShockAPI
 			string accountName = Account?.Name ?? "";
 			TShock.Bans.AddBan(ip, Name, uuid, accountName, reason, false, adminUserName);
 
-			Disconnect(string.Format("Banned: {0}", reason));
+			Disconnect(GetString("Banned: {0}", reason));
 
 			if (string.IsNullOrWhiteSpace(adminUserName))
-				TSPlayer.All.SendInfoMessage("{0} was banned for '{1}'.", Name, reason);
+				TSPlayer.All.SendInfoMessage(GetString("{0} was banned for '{1}'.", Name, reason));
 			else
 				TSPlayer.All.SendInfoMessage("{0} banned {1} for '{2}'.", adminUserName, Name, reason);
 
