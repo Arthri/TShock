@@ -35,11 +35,11 @@
 		<PackageReference Include="GetText.NET" Version="1.7.14" /> <!-- only used to extract out to ./bin. -->
 
 		<!-- the launcher doesnt need the direct OTAPI reference, but since PackageReference[ExcludeFromSingleFile] doesnt work, exclude the assets and copy manually -->
-		<PackageReference Include="OTAPI.Upcoming" Version="3.1.16" ExcludeAssets="all" GeneratePathProperty="true" />
-		<None Include="$(PkgOTAPI_Upcoming)\lib\net6.0\OTAPI.dll">
+		<PackageReference Include="MODEFDP.OTAPI.Upcoming" Version="3.1.17" ExcludeAssets="all" GeneratePathProperty="true" />
+		<None Include="$(PkgMODEFDP_OTAPI_Upcoming)\lib\net6.0\OTAPI.dll">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
-		<None Include="$(PkgOTAPI_Upcoming)\lib\net6.0\OTAPI.Runtime.dll">
+		<None Include="$(PkgMODEFDP_OTAPI_Upcoming)\lib\net6.0\OTAPI.Runtime.dll">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
 		<None Include="$(PkgModFramework)\lib\net6.0\ModFramework.dll">
