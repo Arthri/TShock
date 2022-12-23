@@ -86,7 +86,7 @@
 		<MakeDir Directories="%(POFiles.DestinationSubDirectory)" />
 		<Exec Command="&quot;$(msgfmt)&quot; -o &quot;%(POFiles.TargetPath)&quot; &quot;%(POFiles.Identity)&quot;" />
 		<ItemGroup>
-			<Content Include="%(POFiles.TargetPath)" TargetPath="i18n/%(RecursiveDir)%(Filename).mo" PackagePath="content/i18n/%(RecursiveDir);contentfiles/i18n/%(RecursiveDir)" CopyToOutputDirectory="PreserveNewest" />
+			<Content Include="%(POFiles.TargetPath)" TargetPath="i18n/%(RecursiveDir)%(Filename).mo" PackagePath="content/i18n/%(RecursiveDir);contentfiles/any/any/i18n/%(RecursiveDir)" CopyToOutputDirectory="PreserveNewest" />
 		</ItemGroup>
 	</Target>
 
