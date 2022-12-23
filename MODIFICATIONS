@@ -1,1 +1,3 @@
-- Replaced `Main.ServerSideCharacter` with `TShock.ServerSideCharacterConfig.Settings.Enabled` wherever appropriate
+- Replaced `Main.ServerSideCharacter` with `TShock.ServerSideCharacterConfig.Settings.Enabled` wherever possible
+- Reverted Ban System Rewrite
+- Targets .NET Framework 4.8 instead of .NET Framework 4.5
