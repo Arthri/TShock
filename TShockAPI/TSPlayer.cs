@@ -1944,18 +1944,19 @@ namespace TShockAPI
 			if (!ConnectionAlive)
 				return true;
 
-			string ip = IP;
-			string uuid = UUID;
-			string accountName = Account?.Name ?? "";
-			TShock.Bans.AddBan(ip, Name, uuid, accountName, reason, false, adminUserName);
+			TShock.Bans.InsertBan($"{Identifier.IP}{IP}", reason, adminUserName, DateTime.UtcNow, DateTime.MaxValue);
+			TShock.Bans.InsertBan($"{Identifier.UUID}{UUID}", reason, adminUserName, DateTime.UtcNow, DateTime.MaxValue);
+			if (Account != null)
+			{
+				TShock.Bans.InsertBan($"{Identifier.Account}{Account.Name}", reason, adminUserName, DateTime.UtcNow, DateTime.MaxValue);
+			}
 
 			Disconnect(GetString("Banned: {0}", reason));
 
 			if (string.IsNullOrWhiteSpace(adminUserName))
 				TSPlayer.All.SendInfoMessage(GetString("{0} was banned for '{1}'.", Name, reason));
 			else
-				TSPlayer.All.SendInfoMessage("{0} banned {1} for '{2}'.", adminUserName, Name, reason);
-
+				TSPlayer.All.SendInfoMessage(GetString("{0} banned {1} for '{2}'.", adminUserName, Name, reason));
 			return true;
 		}
 
