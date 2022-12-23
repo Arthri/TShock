@@ -401,6 +401,7 @@ namespace TShockAPI
 				}
 
 				Log.ConsoleInfo(GetString("TShock {0} ({1}) now running.", Version, VersionCodename));
+				Log.ConsoleInfo("https://github.com/Arthri/TShock");
 
 				ServerApi.Hooks.GamePostInitialize.Register(this, OnPostInit);
 				ServerApi.Hooks.GameUpdate.Register(this, OnUpdate);
