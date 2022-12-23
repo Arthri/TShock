@@ -23,9 +23,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: |
-          dotnet build ./TShockLauncher/ --configuration Release --no-restore
-          dotnet build ./TShockPluginManager/ --configuration Release --no-restore
+      run: dotnet build TShock.sln --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
 
