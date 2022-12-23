@@ -28,10 +28,18 @@ namespace TShockAPI.DB
 {
 	public class CharacterManager
 	{
+
+		/*
+
 		public IDbConnection database;
+
+		*/
 
 		public CharacterManager(IDbConnection db)
 		{
+
+		/*
+
 			database = db;
 
 			var table = new SqlTable("tsCharacter",
@@ -75,10 +83,17 @@ namespace TShockAPI.DB
 			                                  	? (IQueryBuilder) new SqliteQueryCreator()
 			                                  	: new MysqlQueryCreator());
 			creator.EnsureTableStructure(table);
+
+		*/
+
 		}
 
 		public PlayerData GetPlayerData(TSPlayer player, int acctid)
 		{
+			return new PlayerData(player);
+
+		/*
+
 			PlayerData playerData = new PlayerData(player);
 
 			try
@@ -144,10 +159,17 @@ namespace TShockAPI.DB
 			}
 
 			return playerData;
+
+		*/
+
 		}
 
 		public bool SeedInitialData(UserAccount account)
 		{
+			return false;
+
+		/*
+
 			var inventory = new StringBuilder();
 
 			var items = new List<NetItem>(TShock.ServerSideCharacterConfig.Settings.StartingInventory);
@@ -175,6 +197,9 @@ namespace TShockAPI.DB
 			}
 
 			return false;
+
+		*/
+
 		}
 
 		/// <summary>
@@ -184,6 +209,10 @@ namespace TShockAPI.DB
 		/// <returns>true if inserted successfully</returns>
 		public bool InsertPlayerData(TSPlayer player, bool fromCommand = false)
 		{
+			return false;
+
+		/*
+
 			PlayerData playerData = player.PlayerData;
 
 			if (!player.IsLoggedIn)
@@ -224,6 +253,9 @@ namespace TShockAPI.DB
 				}
 			}
 			return false;
+
+		*/
+
 		}
 
 		/// <summary>
@@ -233,6 +265,10 @@ namespace TShockAPI.DB
 		/// <returns>true if removed successfully</returns>
 		public bool RemovePlayer(int userid)
 		{
+			return false;
+
+		/*
+
 			try
 			{
 				database.Query("DELETE FROM tsCharacter WHERE Account = @0;", userid);
@@ -244,6 +280,9 @@ namespace TShockAPI.DB
 			}
 
 			return false;
+
+		*/
+
 		}
 
 		/// <summary>
@@ -254,6 +293,10 @@ namespace TShockAPI.DB
 		/// <returns>If the command succeeds.</returns>
 		public bool InsertSpecificPlayerData(TSPlayer player, PlayerData data)
 		{
+			return false;
+
+		/*
+
 			PlayerData playerData = data;
 
 			if (!player.IsLoggedIn)
@@ -360,6 +403,9 @@ namespace TShockAPI.DB
 				}
 			}
 			return false;
+
+		*/
+
 		}
 	}
 }

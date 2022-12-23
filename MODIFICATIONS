@@ -1,3 +1,4 @@
+- Disabled CharacterManager
 - Disabled UpdateManager
 - Replaced `Main.ServerSideCharacter` with `TShock.ServerSideCharacterConfig.Settings.Enabled` wherever possible
 - Reverted Ban System Rewrite
