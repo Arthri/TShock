@@ -978,7 +978,7 @@ namespace TShockAPI
 						Console.WriteLine(GetString("Startup parameter overrode REST port."));
 					}
 				})
-				.AddFlags(playerSet, (p)=>
+				.AddFlags(playerSet, (p) =>
 					{
 						int slots;
 						if (int.TryParse(p, out slots))
@@ -1304,7 +1304,7 @@ namespace TShockAPI
 			if (args.Handled)
 				return;
 
-			if(!OnCreep(args.Grass))
+			if (!OnCreep(args.Grass))
 			{
 				args.Handled = true;
 			}
@@ -1888,7 +1888,8 @@ namespace TShockAPI
 								player.RecentlyCreatedProjectiles.RemoveAll(p => p.Index == e.number && p.Killed);
 							}
 
-							if (!player.RecentlyCreatedProjectiles.Any(p => p.Index == e.number)) {
+							if (!player.RecentlyCreatedProjectiles.Any(p => p.Index == e.number))
+							{
 								player.RecentlyCreatedProjectiles.Add(new GetDataHandlers.ProjectileStruct()
 								{
 									Index = e.number,
