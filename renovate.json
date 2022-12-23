@@ -6,7 +6,7 @@
   "bumpVersion": "prerelease",
   "packageRules": [
     {
-      "matchPackageNames": ["OTAPI.Upcoming"],
+      "matchPackageNames": ["MODEFDP.OTAPI.Upcoming"],
       "ignoreUnstable": "false",
       "bumpVersion": "prerelease",
     }
