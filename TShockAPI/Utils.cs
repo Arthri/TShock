@@ -652,6 +652,11 @@ namespace TShockAPI
 		{
 			seconds = 0;
 
+			if (string.IsNullOrWhiteSpace(str))
+			{
+				return false;
+			}
+
 			var sb = new StringBuilder(3);
 			for (int i = 0; i < str.Length; i++)
 			{
