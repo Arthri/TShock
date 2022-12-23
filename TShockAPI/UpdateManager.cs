@@ -33,6 +33,9 @@ namespace TShockAPI
 	/// </summary>
 	public class UpdateManager
 	{
+
+		/*
+
 		private const string UpdateUrl = "https://update.tshock.co/latest/";
 		private HttpClient _client = new HttpClient();
 
@@ -41,11 +44,16 @@ namespace TShockAPI
 		/// </summary>
 		private int CheckXMinutes = 30;
 
+		*/
+
 		/// <summary>
 		/// Creates a new instance of <see cref="UpdateManager"/> and starts the update thread
 		/// </summary>
 		public UpdateManager()
 		{
+
+		/*
+
 			//5 second timeout
 			_client.Timeout = new TimeSpan(0, 0, 5);
 
@@ -64,10 +72,16 @@ namespace TShockAPI
 				IsBackground = true
 			};
 			t.Start();
+
+		*/
+
 		}
 
 		private async Task CheckForUpdatesAsync(object state)
 		{
+
+		/*
+
 			try
 			{
 				CheckXMinutes = 30;
@@ -87,6 +101,9 @@ namespace TShockAPI
 				TShock.Log.ConsoleError(GetString("Retrying in 5 minutes."));
 				CheckXMinutes = 5;
 			}
+
+		*/
+
 		}
 
 		/// <summary>
@@ -96,11 +113,17 @@ namespace TShockAPI
 		/// <returns></returns>
 		public async Task UpdateCheckAsync(object o)
 		{
+
+		/*
+
 			var updates = await ServerIsOutOfDateAsync();
 			if (updates != null)
 			{
 				NotifyAdministrators(updates);
 			}
+
+		*/
+
 		}
 
 		/// <summary>
@@ -109,6 +132,10 @@ namespace TShockAPI
 		/// <returns></returns>
 		private async Task<Dictionary<string, string>> ServerIsOutOfDateAsync()
 		{
+			return null;
+
+		/*
+
 			var resp = await _client.GetAsync(UpdateUrl);
 			if (resp.StatusCode != HttpStatusCode.OK)
 			{
@@ -130,10 +157,16 @@ namespace TShockAPI
 			}
 
 			return null;
+
+		*/
+
 		}
 
 		private void NotifyAdministrators(Dictionary<string, string> update)
 		{
+
+		/*
+
 			var changes = update["changes"].Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 			NotifyAdministrator(TSPlayer.Server, changes);
 			foreach (TSPlayer player in TShock.Players)
@@ -143,15 +176,24 @@ namespace TShockAPI
 					NotifyAdministrator(player, changes);
 				}
 			}
+
+		*/
+
 		}
 
 		private void NotifyAdministrator(TSPlayer player, string[] changes)
 		{
+
+		/*
+
 			player.SendMessage(GetString("The server is out of date. Latest version: "), Color.Red);
 			for (int j = 0; j < changes.Length; j++)
 			{
 				player.SendMessage(changes[j], Color.Red);
 			}
+
+		*/
+
 		}
 	}
 }
