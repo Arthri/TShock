@@ -12,8 +12,6 @@ jobs:
           submodules: 'recursive'
 
       - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '6.0.100'
 
       - name: Run tests
         run: dotnet test
@@ -30,8 +28,6 @@ jobs:
           submodules: 'recursive'
 
       - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '6.0.100'
 
       - name: Install msgfmt
         run: sudo apt-get install -y gettext
