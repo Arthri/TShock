@@ -85,6 +85,8 @@ namespace TerrariaApi.Server
 			ServerApi.LogWriter.ServerWriteLine(
 				string.Format("TerrariaApi - Server v{0} started.", ApiVersion), TraceLevel.Verbose);
 			ServerApi.LogWriter.ServerWriteLine(
+				"\tSource: https://github.com/Arthri/TSAPI", TraceLevel.Verbose);
+			ServerApi.LogWriter.ServerWriteLine(
 				"\tCommand line: " + Environment.CommandLine, TraceLevel.Verbose);
 			ServerApi.LogWriter.ServerWriteLine(
 				string.Format("\tOS: {0} (64bit: {1})", Environment.OSVersion, Environment.Is64BitOperatingSystem), TraceLevel.Verbose);
