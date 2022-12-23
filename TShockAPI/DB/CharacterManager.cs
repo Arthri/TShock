@@ -28,18 +28,10 @@ namespace TShockAPI.DB
 {
 	public class CharacterManager
 	{
-
-#if !DISABLE_CHARACTER_MANAGER
-
 		public IDbConnection database;
-
-#endif
 
 		public CharacterManager(IDbConnection db)
 		{
-
-#if !DISABLE_CHARACTER_MANAGER
-
 			database = db;
 
 			var table = new SqlTable("tsCharacter",
@@ -83,20 +75,10 @@ namespace TShockAPI.DB
 			                                  	? (IQueryBuilder) new SqliteQueryCreator()
 			                                  	: new MysqlQueryCreator());
 			creator.EnsureTableStructure(table);
-
-#endif
-
 		}
 
 		public PlayerData GetPlayerData(TSPlayer player, int acctid)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
-			return new PlayerData(player);
-
-#else
-
 			PlayerData playerData = new PlayerData(player);
 
 			try
@@ -162,20 +144,10 @@ namespace TShockAPI.DB
 			}
 
 			return playerData;
-
-#endif
-
 		}
 
 		public bool SeedInitialData(UserAccount account)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
-			return false;
-
-#else
-
 			var inventory = new StringBuilder();
 
 			var items = new List<NetItem>(TShock.ServerSideCharacterConfig.Settings.StartingInventory);
@@ -203,9 +175,6 @@ namespace TShockAPI.DB
 			}
 
 			return false;
-
-#endif
-
 		}
 
 		/// <summary>
@@ -215,13 +184,6 @@ namespace TShockAPI.DB
 		/// <returns>true if inserted successfully</returns>
 		public bool InsertPlayerData(TSPlayer player, bool fromCommand = false)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
-			return false;
-
-#else
-
 			PlayerData playerData = player.PlayerData;
 
 			if (!player.IsLoggedIn)
@@ -262,9 +224,6 @@ namespace TShockAPI.DB
 				}
 			}
 			return false;
-
-#endif
-
 		}
 
 		/// <summary>
@@ -274,13 +233,6 @@ namespace TShockAPI.DB
 		/// <returns>true if removed successfully</returns>
 		public bool RemovePlayer(int userid)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
-			return false;
-
-#else
-
 			try
 			{
 				database.Query("DELETE FROM tsCharacter WHERE Account = @0;", userid);
@@ -292,9 +244,6 @@ namespace TShockAPI.DB
 			}
 
 			return false;
-
-#endif
-
 		}
 
 		/// <summary>
@@ -305,13 +254,6 @@ namespace TShockAPI.DB
 		/// <returns>If the command succeeds.</returns>
 		public bool InsertSpecificPlayerData(TSPlayer player, PlayerData data)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
-			return false;
-
-#else
-
 			PlayerData playerData = data;
 
 			if (!player.IsLoggedIn)
@@ -418,9 +360,6 @@ namespace TShockAPI.DB
 				}
 			}
 			return false;
-
-#endif
-
 		}
 	}
 }
