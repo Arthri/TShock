@@ -3,6 +3,69 @@
 This is the rolling changelog for TShock for Terraria. Changes listed under "upcoming changes" are only available in experimental builds.
 
 <!-- ## How to add a changelog entry
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
+ATTENTION MORTALS
+PLEASE READ ALL OF THE INSTRUCTIONS HERE
+IT IS SUPER ANNOYING TO HAVE TO FIX THE CHANGELOG EVERY SINGLE TIME BECAUSE NOBODY READS THESE
 Use past tense when adding new entries; sign your name off when you add or change something. This should primarily be things like user changes, not necessarily codebase changes unless it's really relevant or large.
 
 * Put your entry in terms of what you changed in the past mood. For example: "Changed the world by adding new grommets."
@@ -15,8 +78,88 @@ Use past tense when adding new entries; sign your name off when you add or chang
   * If there is no section called "Upcoming changes" below this line, please add one with `## Upcoming changes` as the first line, and then a bulleted item directly after with the first change. -->
 
 ## Upcoming changes
-* Fixed item giving potentially dropping too many items (@PotatoCider, @punchready)
-* Excluded GeoIP.dat from release bundle (@SignatureBeef)
+* An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team.(@CelestialAnarchy, #2617, @ATFGK)
+* Corrected and updated deserialization of the following packets (@ATFGK):
+  * `ProjectileNew`: Read the third `AI` value.
+    * Before this change, it was previously possible for the projectile damage limit to falsely trigger, such as when using the Terra Balde and Fire Gauntlet together.
+  * `PlayerSpawn`: Read the `NumberOfDeathsPVE` and `NumberOfDeathsPVP` values.
+    * Before this change, the `PlayerSpawnContext` was always read incorrectly, due to the values above being placed in the middle of the existing structure.
+  * `NpcTeleportPortal`: Read the NPC index as a `ushort` instead of a `byte`.
+  * `PlaceObject`: Read the `Random` value.
+    * Before this change, the `Direction` was always read incorrectly, due to the value above being placed in the middle of the existing structure.
+  * `Zones`: Read the `zone5` value.
+  * `PaintTile` and `PaintWall`: Read the `coatTile` and `coatWall` values.
+  * `PlayerHurtV2`: Read the `cooldownCounter` value.
+* Updated `SpawnMsg` to include the `NumberOfDeathsPVE` and `NumberOfDeathsPVP`, and allow them to be optionally used in `TSPlayer.Spawn`. (@ATFGK)
+* Added `WorldTileProvider` to the tshock config with values `default`, `constileation` or `heaptile`. This allows tile providers to be changed in environments where CLI args cannot be altered. See the documentation website for more info about these providers. (@SignatureBeef)
+* Updated the Utils.FindByIdOrName to follow same logic. Now fuzzy match fallback to `StartsWith` and then `Contains`. (@sgkoishi)
+* Added `ShadowCandle` and `BrainOfConfusionBuff` (BoC dodge buff) to the `PlayerAddBuffWhitelist` (@drunderscore)
+* Improved rejection message and code duplication in `OnPlayerBuff`. (@drunderscore)
+  * This will make it so Bouncer rejections regarding `PlayerAddBuff` will now always include the sender index, buff type, receiver index, and time in ticks, allowing much faster triage of buff whitelist issues.
+* Allowed Digging Molecart and bomb fish to break tiles and place tracks. (@sgkoishi)
+* Added built-in package management capabilities for plugins. (@pontaoski)
+* Fixed Super Sponge unable to absorb shimmer. (@sgkoishi, #2833)
+* Increased whitelisted duration of the Mighty Wind (`WindPushed`) buff (from sandstorms). (@drunderscore)
+* Allowed the Hellfire (`OnFire3`) buff. (@drunderscore)
+* Allowed Digging Molecart and bomb fish to break tiles and place tracks (@sgkoishi)
+* Initialized achievements and the `AchievementManager` on the server. This ensures that players cannot cause exceptions to be thrown, chat messages are always logged, and allows achievement names to be localized in the console. Also added a test case for this. (@drunderscore)
+* Allowed multiple test cases to be in TShock's test suite. (@drunderscore)
+* Fixed unable to use Purification/Evil Powder in jungle. (@sgkoishi)
+
+## TShock 5.1.3
+* Added support for Terraria 1.4.4.9 via OTAPI 3.1.20. (@SignatureBeef)
+
+## TShock 5.1.2
+* Added support for Terraria 1.4.4.8.1 via OTAPI 3.1.19. (@SignatureBeef)
+
+## TShock 5.1.1
+* Fixed item giving potentially dropping too many items. (@PotatoCider, @punchready)
+* Excluded GeoIP.dat from release bundle. (@SignatureBeef)
+* Added `TownSlimeRed` to `FishableNpcIDs` list, allowing it to be fished up. (@drunderscore)
+* Bump to Terraria 1.4.4.8 via OTAPI 3.1.18. (@hakusaro, @SignatureBeef)
+  * In this version of Terraria, `Main.maxBuffTypes` and other `maxWhateverTypes` fields have been removed. Their replacements are in `Terraria.ID.whateverID.Count`. TShock calls to these fields have been swapped in order to bring forward compatibility with Terraria 1.4.4.8.
+* In OTAPI 3.1.17, allowed Crystal Shard to grow. (@sgkoishi, @cc004, SignatureBeef/Open-Terraria-API#96)
+* Added permission for summoning Mechdusa, Deerclops and slime pet. (@sgkoishi, #2808)
+* Changed login to only restrict CC'd players during login whilst SSC is enabled. (@drunderscore)
+  * This change allows the config option `RequireLogin` to function usefully again when SSC is not enabled.
+* Changed `PlayerData.RestoreCharacter` to remove all buffs. (@drunderscore)
+  * Before this change, it was theoretically possible to smuggle buffs onto servers with SSC enabled, by using buff indexes past `22`.
+* Allowed Torch God's Favor to place different types of torches and campfires. (@sgkoishi, #2811)
+* Updated translations! Currently, the major projects are at the following completion rates:
+  * Chinese (93%)
+  * Portuguese, Brazilian (89%)
+  * Indonesian (89%)
+  * Russian (56%)
+  * Spanish (24%)
+  * toki pona (10%)
+  * Turkish (8%)
+  * For complete credits, see the table below.
+
+### Translation credits
+The following translators contributed changes from November 1, 2022 to November 9, 2022 (from TShock 5.0.0 to 5.1.0).
+
+|Contributor | Language | Translated words|
+|-----|-----|-----|
+|Shiva Goddess (ShivaGoddess) | Portuguese, Brazilian | 6979|
+|Ricko (Rickojp) | Portuguese, Brazilian | 3154|
+|RidnRaven (ridwankun2) | Indonesian | 2329|
+|Janet Blackquill (pontaoski) | toki pona | 1216|
+|SGKoishi | Chinese Simplified | 640|
+|Cristofer GamerTVH (cristoferherame) | Spanish | 622|
+|HDSeventh (hdseventh) | Indonesian | 315|
+|EMRE ÇELİK (emre0447) | Turkish | 312|
+|PHPoenX | Russian | 297|
+|./lemon.sh (lemon-sh) | Polish | 206|
+|Сергей Червяков (chsergeyg) | Russian | 182|
+|okaythisisepic | Russian | 80|
+|KomashiOFC | Portuguese, Brazilian | 76|
+|Runesicle | toki pona | 22|
+|Marotheit | Pirate English | 7|
+|ATFGK | Chinese Simplified | 4|
+
+## TShock 5.1.0
+
+This release was scrubbed. All changes have been re-allocated to the 5.1.1 release. We consider a verison "final" after the tick and do not apply more changes. Thus, we were unable to simply release 5.0.0 as-is, as a late-breaking bug was discovered and fixed after the tick.
 
 ## TShock 5.0.0
 * Reduced load/save console spam. (@SignatureBeef, @YehnBeep)

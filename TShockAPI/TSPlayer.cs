@@ -1394,7 +1394,9 @@ namespace TShockAPI
 		/// <param name="tiley">The Y coordinate.</param>
 		/// <param name="context">The PlayerSpawnContext.</param>
 		/// <param name="respawnTimer">The respawn timer, will be Player.respawnTimer if parameter is null.</param>
-		public void Spawn(int tilex, int tiley, PlayerSpawnContext context, int? respawnTimer = null)
+		/// <param name="numberOfDeathsPVE">The number of deaths PVE, will be TPlayer.numberOfDeathsPVE if parameter is null.</param>
+		/// <param name="numberOfDeathsPVP">The number of deaths PVP, will be TPlayer.numberOfDeathsPVP if parameter is null.</param>
+		public void Spawn(int tilex, int tiley, PlayerSpawnContext context, int? respawnTimer = null, short? numberOfDeathsPVE = null, short? numberOfDeathsPVP = null)
 		{
 			using (var ms = new MemoryStream())
 			{
@@ -1404,6 +1406,8 @@ namespace TShockAPI
 					TileX = (short)tilex,
 					TileY = (short)tiley,
 					RespawnTimer = respawnTimer ?? TShock.Players[Index].RespawnTimer * 60,
+					NumberOfDeathsPVE = numberOfDeathsPVE ?? (short)TPlayer.numberOfDeathsPVE,
+					NumberOfDeathsPVP = numberOfDeathsPVP ?? (short)TPlayer.numberOfDeathsPVP,
 					PlayerSpawnContext = context,
 				};
 				msg.PackFull(ms);
@@ -1921,9 +1925,9 @@ namespace TShockAPI
 				if (!silent)
 				{
 					if (string.IsNullOrWhiteSpace(adminUserName))
-						TShock.Utils.Broadcast(GetString("{0} was kicked for '{1}'", Name, reason.ToLower()), Color.Green);
+						TShock.Utils.Broadcast(GetString("{0} was kicked for '{1}'", Name, reason), Color.Green);
 					else
-						TShock.Utils.Broadcast(GetString("{0} kicked {1} for '{2}'", adminUserName, Name, reason.ToLower()), Color.Green);
+						TShock.Utils.Broadcast(GetString("{0} kicked {1} for '{2}'", adminUserName, Name, reason), Color.Green);
 				}
 				return true;
 			}

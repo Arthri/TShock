@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
@@ -35,6 +35,8 @@ namespace TShockAPI.Localization
 
 		private static readonly Dictionary<int, string> Prefixs = new Dictionary<int, string>();
 
+		private static readonly Dictionary<int, string> Buffs = new Dictionary<int, string>();
+
 		internal static void Initialize()
 		{
 			var culture = Language.ActiveCulture;
@@ -48,20 +50,26 @@ namespace TShockAPI.Localization
 					LanguageManager.Instance.SetLanguage(GameCulture.FromCultureName(GameCulture.CultureName.English));
 				}
 
-				for (var i = -48; i < Main.maxItemTypes; i++)
+				for (var i = -48; i < Terraria.ID.ItemID.Count; i++)
 				{
 					ItemNames.Add(i, Lang.GetItemNameValue(i));
 				}
 
-				for (var i = -17; i < Main.maxNPCTypes; i++)
+				for (var i = -17; i < Terraria.ID.NPCID.Count; i++)
 				{
 					NpcNames.Add(i, Lang.GetNPCNameValue(i));
+				}
+
+				for (var i = 0; i < Terraria.ID.BuffID.Count; i++)
+				{
+					Buffs.Add(i, Lang.GetBuffName(i));
 				}
 
 				foreach (var field in typeof(Main).Assembly.GetType("Terraria.ID.PrefixID")
 							.GetFields().Where(f => !f.Name.Equals("Count", StringComparison.Ordinal)))
 				{
-					Prefixs.Add((int) field.GetValue(null), field.Name);
+					var i = (int)field.GetValue(null);
+					Prefixs.Add(i, Lang.prefix[i].Value);
 				}
 			}
 			finally
@@ -111,6 +119,20 @@ namespace TShockAPI.Localization
 			string prefix;
 			if (Prefixs.TryGetValue(id, out prefix))
 				return prefix;
+
+			return null;
+		}
+
+		/// <summary>
+		/// Get buff name in English
+		/// </summary>
+		/// <param name="id">Buff Id</param>
+		/// <returns>Buff name in English</returns>
+		public static string GetBuffNameById(int id)
+		{
+			string buff;
+			if (Buffs.TryGetValue(id, out buff))
+				return buff;
 
 			return null;
 		}

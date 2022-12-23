@@ -2,114 +2,114 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tshock\n"
 "POT-Creation-Date: 2022-12-06 05:43:49+0000\n"
-"PO-Revision-Date: 2022-12-06 05:53\n"
+"PO-Revision-Date: 2022-12-06 05:52\n"
 "Last-Translator: \n"
-"Language-Team: Russian, Ukraine\n"
+"Language-Team: Polish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
-"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Crowdin-Project: tshock\n"
 "X-Crowdin-Project-ID: 544368\n"
-"X-Crowdin-Language: ru-UA\n"
+"X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /general-devel/i18n/template.pot\n"
 "X-Crowdin-File-ID: 6\n"
-"Language: ru_UA\n"
+"Language: pl_PL\n"
 
 #: ../../TShockAPI/DB/CharacterManager.cs:194
 #: ../../TShockAPI/DB/CharacterManager.cs:264
 #, csharp-format
 msgctxt "{0} is a player name"
 msgid "Skipping SSC save (due to tshock.ignore.ssc) for {0}"
-msgstr ""
+msgstr "Pomijam zapisywanie SSC (ze względu na tshock.ignore.ssc) dla {0}"
 
 #: ../../TShockAPI/DB/BanManager.cs:213
 #, csharp-format
 msgctxt "{0} is ban number, {1} is ban reason, {2} is a timestamp"
 msgid "#{0} - You are banned: {1} ({2} remaining)"
-msgstr ""
+msgstr "#{0} - Zostałeś zbanowany: {1} (pozostało {2})"
 
 #: ../../TShockAPI/DB/BanManager.cs:208
 #, csharp-format
 msgctxt "{0} is ban number, {1} is ban reason"
 msgid "#{0} - You are banned: {1}"
-msgstr ""
+msgstr "#{0} - Jesteś zbanowany: {1}"
 
 #: ../../TShockAPI/Commands.cs:6499
 msgid "     'basic', 'sakura', 'willow', 'boreal', 'mahogany', 'ebonwood', 'shadewood', 'pearlwood'."
-msgstr ""
+msgstr "     'basic', 'sakura', 'willow', 'boreal', 'mahogany', 'ebonwood', 'shadewood', 'pearlwood'."
 
 #: ../../TShockAPI/Commands.cs:6505
 msgid "     'cactus', 'herb', 'mushroom'."
-msgstr ""
+msgstr "     'cactus', 'herb', 'mushroom'."
 
 #: ../../TShockAPI/Commands.cs:6501
 msgid "     'palm', 'corruptpalm', 'crimsonpalm', 'hallowpalm'."
-msgstr ""
+msgstr "     'palm', 'corruptpalm', 'crimsonpalm', 'hallowpalm'."
 
 #: ../../TShockAPI/Commands.cs:6503
 msgid "     'topaz', 'amethyst', 'sapphire', 'emerald', 'ruby', 'diamond', 'amber'."
-msgstr ""
+msgstr "     'topaz', 'amethyst', 'sapphire', 'emerald', 'ruby', 'diamond', 'amber'."
 
 #: ../../TShockAPI/Commands.cs:1446
 #, csharp-format
 msgid "   {0}{1} \"{2}\" (Find the IP associated with the offline target's account)"
-msgstr ""
+msgstr "   {0}{1} \"{2}\" (Znajdź adres IP powiązany z kontem offline)"
 
 #: ../../TShockAPI/Commands.cs:1444
 #, csharp-format
 msgid "   {0}{1} \"{2}{3}\" {4} {5} (Permanently bans this account name)"
-msgstr ""
+msgstr "   {0}{1} \"{2}{3}\" {4} {5} (Na stałe banuje tę nazwę konta)"
 
 #: ../../TShockAPI/Commands.cs:1449
 #, csharp-format
 msgid "   {0}{1} {2} (Find the player index for the target)"
-msgstr ""
+msgstr "   {0}{1} {2} (Znajdź indeks gracza dla danego konta)"
 
 #: ../../TShockAPI/Commands.cs:1450
 #, csharp-format
 msgid "   {0}{1} {2}{3} {4} {5} (Permanently bans the online player by Account, UUID, and IP)"
-msgstr ""
+msgstr "   {0}{1} {2}{3} {4} {5} (Na stałe banuje gracza online na konto, UUID oraz adres IP)"
 
 #: ../../TShockAPI/Commands.cs:1447
 #, csharp-format
 msgid "   {0}{1} {2}{3} {4} {5} (Permanently bans this IP address)"
-msgstr ""
+msgstr "   {0}{1} \"{2}{3}\" {4} {5} (Na stałe banuje ten adres IP)"
 
 #: ../../TShockAPI/Commands.cs:1386
 #, csharp-format
 msgid "   Eg a value of {0} would represent 10 days, 30 minutes, 0 seconds."
-msgstr ""
+msgstr "   Np. wartość {0} reprezentuje 10 dni, 30 minut, 0 sekund."
 
 #: ../../TShockAPI/Commands.cs:1390
 #, csharp-format
 msgid "   If no {0} are specified, the command uses {1} by default."
-msgstr ""
+msgstr "   Jeśli nie podano {0}, polecenie domyślnie używa {1}."
 
 #: ../../TShockAPI/Commands.cs:1387
 msgid "   If no duration is provided, the ban will be permanent."
-msgstr ""
+msgstr "   Jeśli nie zostanie podany czas trwania, ban będzie permanentny."
 
 #: ../../TShockAPI/Commands.cs:1389
 #, csharp-format
 msgid "   Unless {0} is passed to the command, {1} is assumed to be a player or player index"
-msgstr ""
+msgstr "   Jeśli {0} nie zostanie przekazany do polecenia, {1} jest uznawany za gracza lub indeks gracza"
 
 #: ../../TShockAPI/Commands.cs:1262
 #, csharp-format
 msgid " -> Logged-in as: {0}; in group {1}."
-msgstr ""
+msgstr " -> Zalogowano jako: {0}; w grupie {1}."
 
 #: ../../TShockAPI/Commands.cs:1398
 #, csharp-format
 msgid "- {0} are provided when you add a ban, and can also be viewed with the {1} command."
-msgstr ""
+msgstr "- {0} są podane po dodaniu bana i mogą być również wyświetlone za pomocą polecenia {1}."
 
 #: ../../TShockAPI/Commands.cs:1414
 #, csharp-format
 msgid "- {0} are provided when you add a ban, and can be found with the {1} command."
-msgstr ""
+msgstr "- {0} są podane po dodaniu bana i można je znaleźć za pomocą polecenia {1}."
 
 #: ../../TShockAPI/Commands.cs:1388
 #, csharp-format
@@ -692,7 +692,7 @@ msgstr ""
 #: ../../TShockAPI/Commands.cs:6354
 #, csharp-format
 msgid "{0} healed herself for {1} HP."
-msgstr ""
+msgstr "{0} uleczyła się o {1} HP."
 
 #: ../../TShockAPI/Commands.cs:6352
 #, csharp-format
@@ -702,7 +702,7 @@ msgstr ""
 #: ../../TShockAPI/Commands.cs:4250
 #, csharp-format
 msgid "{0} is already allowed to place tile {1}."
-msgstr ""
+msgstr "{0} już ma pozwolenie na umieszczenie bloku {1}."
 
 #: ../../TShockAPI/Commands.cs:3885
 #, csharp-format
