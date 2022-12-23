@@ -9,6 +9,17 @@
 		<RunPostBuildEvent>Always</RunPostBuildEvent>
 		<DebugType>embedded</DebugType>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract> <!-- needed for sqlite native libs -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Pryaxis &amp; TShock Contributors</Authors>
+		<Copyright>Copyright © Pryaxis &amp; TShock Contributors 2011-2022</Copyright>
+		<Description>Launcher for TShock</Description>
+		<PackageId>MODFEDP.TShock.Server</PackageId>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<Title>TShock.Server (MODIFIED)</Title>
+		<Version>1.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -28,5 +28,5 @@ jobs:
       run: dotnet test --no-build --verbosity normal --configuration Release
 
     # Publish to nuget
-    - name: Push TShockAPI
-      run: dotnet nuget push TShockAPI/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+    - name: Push packages
+      run: dotnet nuget push TShockAPI/bin/Release/*.nupkg TShockLauncher/bin/Release/*.nupkg TShockPluginManager/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
