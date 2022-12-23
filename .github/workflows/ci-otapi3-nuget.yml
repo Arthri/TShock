@@ -18,6 +18,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.400
+    - name: Install msgfmt
+      run: sudo apt-get install -y gettext
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
