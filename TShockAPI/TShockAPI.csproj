@@ -21,14 +21,14 @@
     <Version>5.1.3</Version>
     <AssemblyTitle>TShock for Terraria</AssemblyTitle>
     <Company>Pryaxis &amp; TShock Contributors</Company>
-    <Product>TShockAPI</Product>
+    <Product>MODEFDP.TShockAPI</Product>
     <Copyright>Copyright © Pryaxis &amp; TShock Contributors 2011-2022</Copyright>
     <!-- extras for nuget -->
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
     <Authors>Pryaxis &amp; TShock Contributors</Authors>
-    <Description>TShock is a toolbox for Terraria servers and communities.</Description>
-    <PackageId>TShock</PackageId> <!-- package name for nuget, instead of TShockAPI -->
+    <Description>MODIFIED VERSION - TShock is a toolbox for Terraria servers and communities.</Description>
+    <PackageId>MODEFDP.TShock</PackageId> <!-- package name for nuget, instead of TShockAPI -->
   </PropertyGroup>
 
   <ItemGroup>
