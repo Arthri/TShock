@@ -29,16 +29,16 @@ namespace TShockAPI.DB
 	public class CharacterManager
 	{
 
-#if !DISABLE_CHARACTER_MANAGER
+		/*
 
 		public IDbConnection database;
 
-#endif
+		*/
 
 		public CharacterManager(IDbConnection db)
 		{
 
-#if !DISABLE_CHARACTER_MANAGER
+		/*
 
 			database = db;
 
@@ -84,18 +84,15 @@ namespace TShockAPI.DB
 			                                  	: new MysqlQueryCreator());
 			creator.EnsureTableStructure(table);
 
-#endif
+		*/
 
 		}
 
 		public PlayerData GetPlayerData(TSPlayer player, int acctid)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
 			return new PlayerData(player);
 
-#else
+		/*
 
 			PlayerData playerData = new PlayerData(player);
 
@@ -163,18 +160,15 @@ namespace TShockAPI.DB
 
 			return playerData;
 
-#endif
+		*/
 
 		}
 
 		public bool SeedInitialData(UserAccount account)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
 			return false;
 
-#else
+		/*
 
 			var inventory = new StringBuilder();
 
@@ -204,7 +198,7 @@ namespace TShockAPI.DB
 
 			return false;
 
-#endif
+		*/
 
 		}
 
@@ -215,12 +209,9 @@ namespace TShockAPI.DB
 		/// <returns>true if inserted successfully</returns>
 		public bool InsertPlayerData(TSPlayer player, bool fromCommand = false)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
 			return false;
 
-#else
+		/*
 
 			PlayerData playerData = player.PlayerData;
 
@@ -263,7 +254,7 @@ namespace TShockAPI.DB
 			}
 			return false;
 
-#endif
+		*/
 
 		}
 
@@ -274,12 +265,9 @@ namespace TShockAPI.DB
 		/// <returns>true if removed successfully</returns>
 		public bool RemovePlayer(int userid)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
 			return false;
 
-#else
+		/*
 
 			try
 			{
@@ -293,7 +281,7 @@ namespace TShockAPI.DB
 
 			return false;
 
-#endif
+		*/
 
 		}
 
@@ -305,12 +293,9 @@ namespace TShockAPI.DB
 		/// <returns>If the command succeeds.</returns>
 		public bool InsertSpecificPlayerData(TSPlayer player, PlayerData data)
 		{
-
-#if DISABLE_CHARACTER_MANAGER
-
 			return false;
 
-#else
+		/*
 
 			PlayerData playerData = data;
 
@@ -419,7 +404,7 @@ namespace TShockAPI.DB
 			}
 			return false;
 
-#endif
+		*/
 
 		}
 	}
