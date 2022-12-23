@@ -23,11 +23,10 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: |
-          dotnet build TShock.sln --configuration Release --no-restore
+      run: dotnet build TShock.sln --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal --configuration Release
 
     # Publish to nuget
     - name: Push packages
-      run: dotnet nuget push TShockLauncher/bin/Release/*.nupkg TShockPluginManager/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push TShockAPI/bin/Release/*.nupkg TShockLauncher/bin/Release/*.nupkg TShockPluginManager/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
