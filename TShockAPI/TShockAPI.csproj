@@ -54,6 +54,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)\</PackagePath>
+    </None>
+    <None Include="..\prebuilts\HttpServer.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>HttpServer%(Extension)</Link>
+      <Pack>true</Pack>
+      <PackagePath>lib\$(TargetFramework)\</PackagePath>
+      <Visible>false</Visible>
     </None>
   </ItemGroup>
 
