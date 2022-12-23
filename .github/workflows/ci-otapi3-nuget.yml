@@ -5,28 +5,28 @@ on:
     branches: [ nuget-release ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
+  push:
     environment: release
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        path: [ "TShockAPI", "TShockLauncher", "TShockPluginManager", ]
 
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: 'recursive'
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.400
+
     - name: Install msgfmt
       run: sudo apt-get install -y gettext
-    - name: Restore dependencies
-      run: dotnet restore
+
     - name: Build
-      run: dotnet build TShock.sln --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
+      run: dotnet build ${{ matrix.path }}/ --configuration Release
 
     # Publish to nuget
     - name: Push packages
-      run: dotnet nuget push TShockAPI/bin/Release/*.nupkg TShockLauncher/bin/Release/*.nupkg TShockPluginManager/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ${{ matrix.path }}/bin/Release/*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
