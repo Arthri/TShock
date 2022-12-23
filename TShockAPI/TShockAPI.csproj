@@ -58,7 +58,7 @@
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)\</PackagePath>
     </None>
-    <None Include="..\prebuilts\HttpServer.*">
+    <None Include="..\prebuilts\HttpServer.*" Exclude="..\prebuilts\HttpServer.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>HttpServer%(Extension)</Link>
       <Pack>true</Pack>
