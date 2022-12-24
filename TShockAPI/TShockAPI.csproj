@@ -65,6 +65,13 @@
       <PackagePath>lib\$(TargetFramework)\</PackagePath>
       <Visible>false</Visible>
     </None>
+    <None Include="..\prebuilts\GeoIP.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>%(Filename)%(Extension)</Link>
+      <Pack>true</Pack>
+      <PackagePath>content/;contentFiles/any/any/</PackagePath>
+      <Visible>false</Visible>
+    </None>
   </ItemGroup>
 
 </Project>
