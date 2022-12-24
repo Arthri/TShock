@@ -21,8 +21,6 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '6.0.100'
 
       - name: MonoMod dev build
         run: dotnet nuget add source https://pkgs.dev.azure.com/MonoMod/MonoMod/_packaging/DevBuilds%40Local/nuget/v3/index.json -n DevBuilds@Local
