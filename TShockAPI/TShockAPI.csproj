@@ -68,6 +68,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>%(Filename)%(Extension)</Link>
       <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
       <PackagePath>content/;contentFiles/any/any/</PackagePath>
       <Visible>false</Visible>
     </Content>
