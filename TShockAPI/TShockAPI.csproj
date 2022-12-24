@@ -65,7 +65,6 @@
       <Visible>false</Visible>
     </None>
     <Content Include="..\prebuilts\GeoIP.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>%(Filename)%(Extension)</Link>
       <Pack>true</Pack>
       <PackageCopyToOutput>true</PackageCopyToOutput>
