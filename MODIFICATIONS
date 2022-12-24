@@ -1,2 +1,1 @@
 - Changed default log file path to `serverlogs/{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.txt`
-- Targets .NET Framework 4.8 instead of .NET Framework 4.5
