@@ -10,7 +10,7 @@
 
 
   <!-- Pack generated app hosts into NuGet package -->
-  <Target Name="PackAppHost" AfterTargets="ResolveProjectReferences">
+  <Target Name="_PackAppHost" AfterTargets="ResolveProjectReferences">
     <ItemGroup>
       <Content Include="@(AppHost)" Pack="true" PackagePath="runtimes/" />
     </ItemGroup>
