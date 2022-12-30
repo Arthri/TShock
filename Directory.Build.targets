@@ -20,4 +20,10 @@
     <Exec LogStandardErrorAsError="true" StandardOutputImportance="High" Command="dotnet nuget push &quot;@(_NuGetPackages, '&quot; &quot;')&quot; -s tmp" />
   </Target>
 
+
+
+  <Target Name="_OutputPackageOutputPath" AfterTargets="Pack">
+    <WriteLinesToFile File="$(GITHUB_OUTPUT)" Lines="PACKAGE_OUTPUT_PATH=$(PackageOutputAbsolutePath)" />
+  </Target>
+
 </Project>
