@@ -11,7 +11,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        path: [ "TShockAPI", "TShockLauncher", "TShockPluginManager", ]
+        path: [
+          "TShockAPI/TShockAPI.csproj",
+          "TShockLauncher/TShockLauncher.csproj",
+          "TShockPluginManager/TShockPluginManager.csproj",
+          "TShock.Server.Hosts/TShock.Server.win-x64/TShock.Server.win-x64.nuproj",
+          "TShock.Server.Hosts/TShock.Server.linux-x64/TShock.Server.linux-x64.nuproj",
+          "TShock.Server.Hosts/TShock.Server.linux-arm64/TShock.Server.linux-arm64.nuproj",
+        ]
 
     steps:
     - uses: actions/checkout@v3
@@ -25,7 +32,7 @@ jobs:
       run: sudo apt-get install -y gettext
 
     - name: Build
-      run: dotnet build ${{ matrix.path }}/ --configuration Release
+      run: dotnet build ${{ matrix.path }} --configuration Release
 
     # Publish to nuget
     - name: Push packages
