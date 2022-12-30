@@ -1,4 +1,4 @@
-<Project ToolsVersion="15.0" TreatAsLocalProperty="_DirectoryBuildPropsFile" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="ResolveProjectReferences;Pack">
+<Project ToolsVersion="15.0" TreatAsLocalProperty="_DirectoryBuildPropsFile" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <!-- Load higher Directory.Build.props if it exists -->
   <PropertyGroup>
@@ -31,13 +31,6 @@
     <Title>App Host for TShock.Server.dll</Title>
     <Version>5.1.3.4</Version>
   </PropertyGroup>
-
-
-
-  <!-- Reference TShockLauncher and generate app host -->
-  <ItemGroup>
-    <ProjectReference Include="$(MSBuildProjectDirectory)/../../TShockLauncher/TShockLauncher.csproj" AdditionalProperties="RuntimeIdentifier=$([System.IO.Path]::GetFileNameWithoutExtension('$(MSBuildProjectName)'));SelfContained=false" SetConfiguration="Configuration=Release" Targets="GetAppHost" OutputItemType="AppHost" ReferenceOutputAssembly="false" />
-  </ItemGroup>
 
 
 
