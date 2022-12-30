@@ -9,8 +9,39 @@
 
 
 
+  <!-- Overwrite build processes -->
+  <PropertyGroup>
+    <BuildDependsOn>_PackAppHost</BuildDependsOn>
+  </PropertyGroup>
+
+
+
+  <!-- Build TShockLauncher and get app host -->
+  <Target Name="_GetAppHost">
+    <!-- Restore needs to run separately. https://github.com/dotnet/msbuild/issues/2811 -->
+    <MSBuild
+      BuildInParallel="$(BuildInParallel)"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildProjectDirectory)/../../TShockLauncher/TShockLauncher.csproj"
+      Properties="Configuration=Release;RuntimeIdentifier=$([System.IO.Path]::GetExtension('$(MSBuildProjectName)').Remove(0, 1));SelfContained=false"
+      Targets="Restore">
+      <Output TaskParameter="TargetOutputs" ItemName="AppHost" />
+    </MSBuild>
+
+    <MSBuild
+      BuildInParallel="$(BuildInParallel)"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildProjectDirectory)/../../TShockLauncher/TShockLauncher.csproj"
+      Properties="Configuration=Release;RuntimeIdentifier=$([System.IO.Path]::GetExtension('$(MSBuildProjectName)').Remove(0, 1));SelfContained=false"
+      Targets="GetAppHost">
+      <Output TaskParameter="TargetOutputs" ItemName="AppHost" />
+    </MSBuild>
+  </Target>
+
+
+
   <!-- Pack generated app hosts into NuGet package -->
-  <Target Name="_PackAppHost" AfterTargets="ResolveProjectReferences">
+  <Target Name="_PackAppHost" DependsOnTargets="_GetAppHost">
     <ItemGroup>
       <Content Include="@(AppHost)" Pack="true" PackagePath="runtimes/" />
     </ItemGroup>
