@@ -22,7 +22,8 @@
 
 
 
-  <Target Name="_OutputPackageOutputPath" AfterTargets="Pack">
+  <!-- Emit PackageOutputPath for GitHub Actions to use -->
+  <Target Name="_OutputPackageOutputPath" AfterTargets="Pack" Condition="'$(GITHUB_OUTPUT)' != ''">
     <WriteLinesToFile File="$(GITHUB_OUTPUT)" Lines="PACKAGE_OUTPUT_PATH=$(PackageOutputAbsolutePath)" />
   </Target>
 

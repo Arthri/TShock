@@ -16,8 +16,7 @@
 
 
 
-  <!-- Build TShockLauncher and get app host -->
-  <Target Name="_GetAppHost">
+  <Target Name="_RestoreProjects" BeforeTargets="CollectPackageDownloads">
     <!-- Restore needs to run separately. https://github.com/dotnet/msbuild/issues/2811 -->
     <MSBuild
       BuildInParallel="$(BuildInParallel)"
@@ -27,7 +26,12 @@
       Targets="Restore">
       <Output TaskParameter="TargetOutputs" ItemName="AppHost" />
     </MSBuild>
+  </Target>
 
+
+
+  <!-- Build TShockLauncher and get app host -->
+  <Target Name="_GetAppHost">
     <MSBuild
       BuildInParallel="$(BuildInParallel)"
       ContinueOnError="$(ContinueOnError)"
