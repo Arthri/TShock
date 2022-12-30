@@ -16,6 +16,8 @@
 
 
 
+  <!-- Restore projects -->
+  <!-- BeforeTargets="Restore" can't be used because https://github.com/NuGet/Home/issues/4781 -->
   <Target Name="_RestoreProjects" BeforeTargets="CollectPackageDownloads">
     <!-- Restore needs to run separately. https://github.com/dotnet/msbuild/issues/2811 -->
     <MSBuild
