@@ -9,6 +9,16 @@
 
 
 
+  <!-- Package Information -->
+  <PropertyGroup>
+    <!--
+      Neither PackageId or AssemblyName is available in props, so it needs to be set in targets
+    -->
+    <PackageId>MODEFDP.$(AssemblyName)</PackageId>
+  </PropertyGroup>
+
+
+
   <!-- Overwrite build processes -->
   <PropertyGroup>
     <BuildDependsOn>_PackAppHost</BuildDependsOn>
