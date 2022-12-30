@@ -11,7 +11,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        path: [ "TShockAPI", "TShockLauncher", "TShockPluginManager", ]
+        path: [
+          "TShockAPI",
+          "TShockLauncher",
+          "TShockPluginManager",
+          "TShock.Server.Hosts/TShock.Server.win-x64",
+          "TShock.Server.Hosts/TShock.Server.linux-x64",
+          "TShock.Server.Hosts/TShock.Server.linux-arm64",
+        ]
 
     steps:
     - uses: actions/checkout@v3

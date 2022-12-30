@@ -19,7 +19,7 @@
 		<PackageId>MODEFDP.TShock.Server</PackageId>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<Title>TShock.Server (MODIFIED)</Title>
-		<Version>5.1.3.3</Version>
+		<Version>5.1.3.4</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -87,6 +87,13 @@
 		<Exec Command="&quot;$(msgfmt)&quot; -o &quot;%(POFiles.TargetPath)&quot; &quot;%(POFiles.Identity)&quot;" />
 		<ItemGroup>
 			<Content Include="%(POFiles.TargetPath)" TargetPath="i18n/%(RecursiveDir)%(Filename).mo" CopyToOutputDirectory="PreserveNewest" PackageCopyToOutput="true" PackagePath="content/i18n/%(RecursiveDir);contentFiles/any/any/i18n/%(RecursiveDir)" />
+		</ItemGroup>
+	</Target>
+
+	<!-- Used by TShock.Server.Hosts for getting path to app host -->
+	<Target Name="GetAppHost" AfterTargets="Build" Outputs="@(AppHost)">
+		<ItemGroup>
+			<AppHost Include="$(TargetDir)$(AssemblyName)$(_NativeExecutableExtension)" />
 		</ItemGroup>
 	</Target>
 
