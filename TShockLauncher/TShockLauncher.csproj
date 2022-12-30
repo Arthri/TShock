@@ -91,7 +91,7 @@
 	</Target>
 
 	<!-- Used by TShock.Server.Hosts for getting path to app host -->
-	<Target Name="GetAppHost" AfterTargets="Build" Outputs="@(AppHost)">
+	<Target Name="GetAppHost" DependsOnTargets="Build" AfterTargets="Build" Outputs="@(AppHost)">
 		<ItemGroup>
 			<AppHost Include="$(TargetDir)$(AssemblyName)$(_NativeExecutableExtension)" />
 		</ItemGroup>
