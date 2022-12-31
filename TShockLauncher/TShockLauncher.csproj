@@ -16,10 +16,10 @@
 		<Authors>Pryaxis &amp; TShock Contributors</Authors>
 		<Copyright>Copyright © Pryaxis &amp; TShock Contributors 2011-2022</Copyright>
 		<Description>Launcher for TShock</Description>
-		<PackageId>MODEFDP.TShock.Server</PackageId>
+		<PackageId>MODEFDP.TShock.CLI</PackageId>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<Title>TShock.Server (MODIFIED)</Title>
-		<Version>5.1.3.4</Version>
+		<Title>TShock.CLI (MODIFIED)</Title>
+		<Version>5.1.3.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
