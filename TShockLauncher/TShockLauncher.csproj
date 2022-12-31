@@ -90,13 +90,6 @@
 		</ItemGroup>
 	</Target>
 
-	<!-- Used by TShock.Server.Hosts for getting path to app host -->
-	<Target Name="GetAppHost" DependsOnTargets="Build" AfterTargets="Build" Outputs="@(AppHost)">
-		<ItemGroup>
-			<AppHost Include="$(TargetDir)$(AssemblyName)$(_NativeExecutableExtension)" />
-		</ItemGroup>
-	</Target>
-
 	<Target Name="CreateServerPlugins" AfterTargets="PostBuildEvent;Publish">
 		<MakeDir Directories="$(OutDir)ServerPlugins" />
 		<MakeDir Directories="$(PublishDir)ServerPlugins" />
