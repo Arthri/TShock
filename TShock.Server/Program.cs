@@ -5,7 +5,16 @@ Dictionary<string, Assembly> _cache = new Dictionary<string, Assembly>();
 
 AssemblyLoadContext.Default.Resolving += Default_Resolving;
 
-TerrariaApi.Server.Program.Main(args);
+/// <summary>
+/// Initiates the TSAPI server.
+/// </summary>
+/// <remarks>This method exists so that the resolver can attach before TSAPI needs its dependencies.</remarks>
+static void Start()
+{
+	TerrariaApi.Server.Program.Main(args);
+}
+
+Start();
 
 /// <summary>
 /// Resolves a module from the ./bin folder, either with a .dll by preference or .exe
