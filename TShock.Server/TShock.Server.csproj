@@ -104,4 +104,27 @@
     </ItemGroup>
   </Target>
 
+
+
+  <!-- Used by TShock.Server.nuproj to get app host path -->
+  <Target Name="_GetAppHost" DependsOnTargets="Build" Outputs="@(_RuntimeFiles)">
+    <ItemGroup>
+      <_RuntimeFiles Include="$(TargetDir)$(AssemblyName)$(_NativeExecutableExtension)" />
+      <_RuntimeFiles Include="$(ProjectRuntimeConfigFilePath)" />
+    </ItemGroup>
+  </Target>
+
+
+
+  <!-- Used by TShock.Server.nuproj to pack files into "runtime/" -->
+  <ItemGroup>
+    <None Condition="'$(_RuntimeFiles)' != ''" Include="$(_RuntimeFiles)">
+      <Link>%(Filename)%(Extension)</Link>
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <PackagePath>runtimes/$([System.IO.Path]::GetFileName("$([System.IO.Path]::GetDirectoryName('%(FullPath)'))"))/native/</PackagePath>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+
 </Project>
