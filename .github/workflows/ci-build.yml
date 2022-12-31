@@ -19,5 +19,5 @@ jobs:
       - name: Install msgfmt
         run: sudo apt-get install -y gettext
 
-      - name: Build TShockAPI.sln
-        run: dotnet build TShockAPI.sln
+      - name: Build TShock.sln
+        run: dotnet build TShock.sln
