@@ -15,7 +15,7 @@
 		<PackageId>MODEFDP.TShock.PluginManager</PackageId>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<Title>TShock Plugin Manager (MODIFIED)</Title>
-		<Version>5.1.3.4</Version>
+		<Version>5.1.3.5</Version>
   </PropertyGroup>
 
   <ItemGroup>
