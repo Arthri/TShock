@@ -9,12 +9,12 @@ AssemblyLoadContext.Default.Resolving += Default_Resolving;
 /// Initiates the TSAPI server.
 /// </summary>
 /// <remarks>This method exists so that the resolver can attach before TSAPI needs its dependencies.</remarks>
-static void Start()
+static void Start(string[] args)
 {
 	TerrariaApi.Server.Program.Main(args);
 }
 
-Start();
+Start(args);
 
 /// <summary>
 /// Resolves a module from the ./bin folder, either with a .dll by preference or .exe
