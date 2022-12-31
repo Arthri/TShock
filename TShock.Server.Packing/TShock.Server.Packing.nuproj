@@ -1,0 +1,72 @@
+<Project TreatAsLocalProperty="_TargetRuntimeIdentifiers;_RuntimeFiles">
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TargetRuntimeIdentifiers Include="win-x64;osx-x64;linux-x64;linux-arm64;linux-arm" />
+  </ItemGroup>
+
+  <!-- Restore Target Projects -->
+  <!-- BeforeTargets="Restore" can't be used. Detailed in https://github.com/NuGet/Home/issues/4781 -->
+  <Target Name="_RestoreProjects" BeforeTargets="CollectPackageDownloads">
+    <PropertyGroup>
+      <_TargetRuntimeIdentifiers>@(TargetRuntimeIdentifiers)</_TargetRuntimeIdentifiers>
+    </PropertyGroup>
+
+    <MSBuild
+      BuildInParallel="$(BuildInParallel)"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
+      Properties="RuntimeIdentifiers=$(_TargetRuntimeIdentifiers);SelfContained=false"
+      Targets="Restore"
+    />
+  </Target>
+
+  <Target Name="_BuildProjects">
+    <MSBuild
+      BuildInParallel="false"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
+      Properties="Configuration=Release;RuntimeIdentifier=%(TargetRuntimeIdentifiers.Identity);SelfContained=false"
+      Targets="_GetAppHost"
+    >
+      <Output TaskParameter="TargetOutputs" ItemName="AppHost" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="_BuildProjectsRIDAgnostic" AfterTargets="_BuildProjects">
+    <MSBuild
+      BuildInParallel="false"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
+      Properties="Configuration=Release"
+      Targets="Build"
+    />
+  </Target>
+
+  <Target Name="_PackProjects" DependsOnTargets="_BuildProjects">
+    <PropertyGroup>
+      <_RuntimeFiles>@(AppHost)</_RuntimeFiles>
+    </PropertyGroup>
+
+    <MSBuild
+      BuildInParallel="$(BuildInParallel)"
+      ContinueOnError="$(ContinueOnError)"
+      Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
+      Properties="Configuration=Release;_RuntimeFiles=$(_RuntimeFiles)"
+      Targets="Pack"
+    />
+  </Target>
+
+  <Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+
+  <!-- This needs to be set after importing Sdk.targets -->
+  <PropertyGroup>
+    <BuildDependsOn>_PackProjects</BuildDependsOn>
+  </PropertyGroup>
+
+</Project>
