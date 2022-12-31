@@ -2,7 +2,6 @@
 
   <!-- Build Configuration -->
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract> <!-- needed for sqlite native libs -->
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
