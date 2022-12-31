@@ -56,12 +56,14 @@
       <PackageCopyToOutput>true</PackageCopyToOutput>
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)\</PackagePath>
+      <TargetPath>$(_HttpServerDestinationSubDirectory)%(Filename)%(Extension)</TargetPath>
     </None>
     <None Include="..\prebuilts\HttpServer.*" Exclude="..\prebuilts\HttpServer.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Link>HttpServer%(Extension)</Link>
       <Pack>true</Pack>
       <PackagePath>lib\$(TargetFramework)\</PackagePath>
+      <TargetPath>$(_HttpServerDestinationSubDirectory)%(Filename)%(Extension)</TargetPath>
       <Visible>false</Visible>
     </None>
     <Content Include="..\prebuilts\GeoIP.dat">
