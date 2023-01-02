@@ -18,7 +18,7 @@
     </PropertyGroup>
 
     <MSBuild
-      BuildInParallel="$(BuildInParallel)"
+      BuildInParallel="false"
       ContinueOnError="$(ContinueOnError)"
       Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
       Properties="RuntimeIdentifiers=$(_TargetRuntimeIdentifiers);SelfContained=false"
@@ -54,7 +54,7 @@
     </PropertyGroup>
 
     <MSBuild
-      BuildInParallel="$(BuildInParallel)"
+      BuildInParallel="false"
       ContinueOnError="$(ContinueOnError)"
       Projects="$(MSBuildThisFileDirectory)../TShock.Server/TShock.Server.csproj"
       Properties="Configuration=Release;_RuntimeFiles=$(_RuntimeFiles)"
