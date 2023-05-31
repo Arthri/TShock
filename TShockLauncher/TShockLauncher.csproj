@@ -19,7 +19,7 @@
 		<PackageId>MODEFDP.TShock.CLI</PackageId>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
 		<Title>TShock.CLI (MODIFIED)</Title>
-		<Version>5.1.3.6</Version>
+		<Version>5.2.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
