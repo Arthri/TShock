@@ -78,7 +78,10 @@ Use past tense when adding new entries; sign your name off when you add or chang
   * If there is no section called "Upcoming changes" below this line, please add one with `## Upcoming changes` as the first line, and then a bulleted item directly after with the first change. -->
 
 ## Upcoming changes
-* An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team.(@CelestialAnarchy, #2617, @ATFGK)
+Your changes could be here!
+
+## TShock 5.2
+* An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team. (@CelestialAnarchy, #2617, @ATFGK)
 * Corrected and updated deserialization of the following packets (@ATFGK):
   * `ProjectileNew`: Read the third `AI` value.
     * Before this change, it was previously possible for the projectile damage limit to falsely trigger, such as when using the Terra Balde and Fire Gauntlet together.
@@ -105,6 +108,11 @@ Use past tense when adding new entries; sign your name off when you add or chang
 * Initialized achievements and the `AchievementManager` on the server. This ensures that players cannot cause exceptions to be thrown, chat messages are always logged, and allows achievement names to be localized in the console. Also added a test case for this. (@drunderscore)
 * Allowed multiple test cases to be in TShock's test suite. (@drunderscore)
 * Fixed unable to use Purification/Evil Powder in jungle. (@sgkoishi)
+* Set the `GetDataHandledEventArgs.Player` property for the `SyncTilePicking` data handler. (@drunderscore)
+* Relaxed custom death message restrictions to allow Inferno potions in PvP. (@drunderscore)
+* Allowed Flower Boots to place Ash Flowers on Ash Grass blocks. (@punchready)
+* Removed unnecessary range check that artifically shortened quick stack reach. (@boddyn, #2885, @bcat)
+* Improved the exploit protection in tile rect handling. (@punchready)
 
 ## TShock 5.1.3
 * Added support for Terraria 1.4.4.9 via OTAPI 3.1.20. (@SignatureBeef)
