@@ -63,7 +63,7 @@ namespace TShockAPI
 		/// <summary>VersionNum - The version number the TerrariaAPI will return back to the API. We just use the Assembly info.</summary>
 		public static readonly Version VersionNum = Assembly.GetExecutingAssembly().GetName().Version;
 		/// <summary>VersionCodename - The version codename is displayed when the server starts. Inspired by software codenames conventions.</summary>
-		public static readonly string VersionCodename = "Thank you, everyone, for your support of TShock all these years! <3";
+		public static readonly string VersionCodename = "Intensity";
 
 		/// <summary>SavePath - This is the path TShock saves its data in. This path is relative to the TerrariaServer.exe (not in ServerPlugins).</summary>
 		public static string SavePath = "tshock";
@@ -697,13 +697,9 @@ namespace TShockAPI
 
 			if (args.Chest != null)
 			{
+				// After checking for protected regions, no further range checking is necessarily because the client packet only specifies the
+				// inventory slot to quick stack. The vanilla Terraria server itself determines what chests are close enough to the player.
 				if (Config.Settings.RegionProtectChests && !Regions.CanBuild((int)args.WorldPosition.X, (int)args.WorldPosition.Y, tsplr))
-				{
-					args.Handled = true;
-					return;
-				}
-
-				if (!tsplr.IsInRange(args.Chest.x, args.Chest.y))
 				{
 					args.Handled = true;
 					return;
