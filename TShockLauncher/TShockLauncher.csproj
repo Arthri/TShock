@@ -16,9 +16,9 @@
 		<Authors>Pryaxis &amp; TShock Contributors</Authors>
 		<Copyright>Copyright © Pryaxis &amp; TShock Contributors 2011-2022</Copyright>
 		<Description>Launcher for TShock</Description>
-		<PackageId>MODEFDP.TShock.CLI</PackageId>
+		<PackageId>MODEFDP.TShock.Server</PackageId>
 		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-		<Title>TShock.CLI (MODIFIED)</Title>
+		<Title>TShock.Server (MODIFIED)</Title>
 		<Version>5.2.0</Version>
 	</PropertyGroup>
 
@@ -62,34 +62,6 @@
 		</None>
 	</ItemGroup>
 
-	<ItemGroup>
-		<POFiles Include="..\i18n\**\*.po">
-			<DestinationSubDirectory>$(IntermediateOutputPath)i18n/%(RecursiveDir)</DestinationSubDirectory>
-			<TargetPath>%(DestinationSubDirectory)%(Filename).mo</TargetPath>
-		</POFiles>
-	</ItemGroup>
-	
-	<Target Name="FindMsgfmt" BeforeTargets="PrepareResources;AssignTargetPaths">
-		<Exec Command="sh -c &quot;where msgfmt&quot;" ConsoleToMsBuild="true" Condition="'$(OS)' == 'Windows_NT'">
-			<Output TaskParameter="ConsoleOutput" PropertyName="msgfmt" />
-		</Exec>
-		<Exec Command="sh -c &quot;which msgfmt&quot;" ConsoleToMsBuild="true" Condition="'$(OS)' == 'Unix'">
-			<Output TaskParameter="ConsoleOutput" PropertyName="msgfmt" />
-		</Exec>
-	</Target>
-
-	<Target
-		Name="GenerateMOFiles"
-		AfterTargets="FindMsgfmt"
-		Inputs="@(POFiles)"
-		Outputs="%(TargetPath)">
-		<MakeDir Directories="%(POFiles.DestinationSubDirectory)" />
-		<Exec Command="&quot;$(msgfmt)&quot; -o &quot;%(POFiles.TargetPath)&quot; &quot;%(POFiles.Identity)&quot;" />
-		<ItemGroup>
-			<Content Include="%(POFiles.TargetPath)" TargetPath="i18n/%(RecursiveDir)%(Filename).mo" CopyToOutputDirectory="PreserveNewest" PackageCopyToOutput="true" PackagePath="content/i18n/%(RecursiveDir);contentFiles/any/any/i18n/%(RecursiveDir)" />
-		</ItemGroup>
-	</Target>
-
 	<Target Name="CreateServerPlugins" AfterTargets="PostBuildEvent;Publish">
 		<MakeDir Directories="$(OutDir)ServerPlugins" />
 		<MakeDir Directories="$(PublishDir)ServerPlugins" />
@@ -98,12 +70,6 @@
 		</ItemGroup>
 		<Copy SourceFiles="@(ApiFiles)" DestinationFolder="$(OutDir)ServerPlugins" ContinueOnError="true" />
 		<Copy SourceFiles="@(ApiFiles)" DestinationFolder="$(PublishDir)ServerPlugins" ContinueOnError="true" />
-	</Target>
-	<Target Name="CopyI18n" AfterTargets="Publish">
-		<ItemGroup>
-			<MOFiles Include="$(OutDir)**/*.mo"/>
-		</ItemGroup>
-		<Copy SourceFiles="@(MOFiles)" DestinationFolder="$(PublishDir)%(RecursiveDir)" />
 	</Target>
 	<Target Name="MoveBin" AfterTargets="Publish">
 		<ItemGroup>
