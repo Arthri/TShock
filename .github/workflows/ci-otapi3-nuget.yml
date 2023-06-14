@@ -13,7 +13,6 @@ jobs:
       matrix:
         path: [
           "TShockAPI/TShockAPI.csproj",
-          "TShockPluginManager/TShockPluginManager.csproj",
         ]
 
     steps:
