@@ -71,12 +71,6 @@
 		<Copy SourceFiles="@(ApiFiles)" DestinationFolder="$(OutDir)ServerPlugins" ContinueOnError="true" />
 		<Copy SourceFiles="@(ApiFiles)" DestinationFolder="$(PublishDir)ServerPlugins" ContinueOnError="true" />
 	</Target>
-	<Target Name="CopyI18n" AfterTargets="Publish">
-		<ItemGroup>
-			<MOFiles Include="$(OutDir)**/*.mo"/>
-		</ItemGroup>
-		<Copy SourceFiles="@(MOFiles)" DestinationFolder="$(PublishDir)%(RecursiveDir)" />
-	</Target>
 	<Target Name="MoveBin" AfterTargets="Publish">
 		<ItemGroup>
 			<MoveBinaries Include="$(PublishDir)*" Exclude="$(PublishDir)\TShock.Server*;$(PublishDir)\GeoIP.dat" />
