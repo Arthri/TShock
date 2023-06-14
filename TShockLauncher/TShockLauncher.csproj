@@ -64,8 +64,8 @@
 
 	<ItemGroup>
 		<POFiles Include="..\i18n\**\*.po">
-			<DestinationSubDirectory>$(IntermediateOutputPath)i18n/%(RecursiveDir)</DestinationSubDirectory>
-			<TargetPath>%(DestinationSubDirectory)%(Filename).mo</TargetPath>
+			<IntermediateDirectory>$(IntermediateOutputPath)i18n/%(RecursiveDir)</IntermediateDirectory>
+			<TargetPath>%(IntermediateDirectory)%(Filename).mo</TargetPath>
 		</POFiles>
 	</ItemGroup>
 	
@@ -83,7 +83,7 @@
 		AfterTargets="FindMsgfmt"
 		Inputs="@(POFiles)"
 		Outputs="%(TargetPath)">
-		<MakeDir Directories="%(POFiles.DestinationSubDirectory)" />
+		<MakeDir Directories="%(POFiles.IntermediateDirectory)" />
 		<Exec Command="&quot;$(msgfmt)&quot; -o &quot;%(POFiles.TargetPath)&quot; &quot;%(POFiles.Identity)&quot;" />
 		<ItemGroup>
 			<Content Include="%(POFiles.TargetPath)" TargetPath="i18n/%(RecursiveDir)%(Filename).mo" CopyToOutputDirectory="PreserveNewest" PackageCopyToOutput="true" PackagePath="content/i18n/%(RecursiveDir);contentFiles/any/any/i18n/%(RecursiveDir)" />
