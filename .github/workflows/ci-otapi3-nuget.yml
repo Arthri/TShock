@@ -12,7 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         path: [
-          "TShockAPI/TShockAPI.csproj"
+          "TShockAPI/TShockAPI.csproj",
+          "TShockPluginManager/TShockPluginManager.csproj",
         ]
 
     steps:
