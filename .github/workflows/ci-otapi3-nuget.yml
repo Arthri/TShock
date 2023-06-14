@@ -12,8 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         path: [
-          "TShockAPI/TShockAPI.csproj",
-          "TShock.Server.Packing/TShock.Server.Packing.nuproj"
+          "TShockAPI/TShockAPI.csproj"
         ]
 
     steps:

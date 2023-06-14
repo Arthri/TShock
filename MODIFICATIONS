@@ -2,8 +2,6 @@
 - (5.1.3) Added modification notice to README
 - (5.1.3.5) Added new workflow "CI (Build)" to build TShock
 - (5.1.3.3) Added target for testing NuGet packages in development environment
-- (5.1.3.5) Added TShock.Server for dedicated no-CLI server
-- (5.1.3.5) Added TShock.Server.Packing to pack TShock.Server with app hosts
 - Changes Declaration
   - (5.1.3) Added `https://github.com/Arthri/TShock` to logs
   - (5.1.3) Description is prefixed with `MODIFIED VERSION -`

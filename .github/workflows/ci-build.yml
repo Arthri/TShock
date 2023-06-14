@@ -21,6 +21,3 @@ jobs:
 
       - name: Build TShock.sln
         run: dotnet build TShock.sln
-
-      - name: Build TShock.Server.Packing
-        run: dotnet build TShock.Server.Packing/TShock.Server.Packing.nuproj
