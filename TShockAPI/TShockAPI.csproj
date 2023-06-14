@@ -71,6 +71,10 @@
       <PackagePath>content/;contentFiles/any/any/</PackagePath>
       <Visible>false</Visible>
     </Content>
+    <None Include="_Package.props;_Package.targets">
+      <Pack>true</Pack>
+      <PackagePath>build/$(PackageId)%(Extension)</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
