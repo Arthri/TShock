@@ -30,8 +30,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TShockInstaller", "TShockIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TShockPluginManager", "TShockPluginManager\TShockPluginManager.csproj", "{9FFABC7D-B042-4B58-98F5-7FA787B9A757}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TShock.Server", "TShock.Server\TShock.Server.csproj", "{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,22 +138,6 @@ Global
 		{9FFABC7D-B042-4B58-98F5-7FA787B9A757}.Release|x64.Build.0 = Release|Any CPU
 		{9FFABC7D-B042-4B58-98F5-7FA787B9A757}.Release|x86.ActiveCfg = Release|Any CPU
 		{9FFABC7D-B042-4B58-98F5-7FA787B9A757}.Release|x86.Build.0 = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|x64.Build.0 = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Debug|x86.Build.0 = Debug|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|x64.ActiveCfg = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|x64.Build.0 = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|x86.ActiveCfg = Release|Any CPU
-		{F5DE371F-BF79-41A7-BE4D-4550FAAAA003}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
