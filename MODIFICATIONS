@@ -7,6 +7,7 @@
   - (5.1.3) Added `Source: https://github.com/Arthri/TSAPI` to logs
   - (5.1.3) Description is prefixed with `MODIFIED VERSION -`
   - (5.1.3) Changed package ID from `TSAPI` to `MODEFDP.TSAPI`
+- (5.2.0.1) Enabled StackTrace to show IL offsets when PDBs information is unavailable
 - (5.1.3.3) Packed PDB in TSAPI package(nupkg)
 - (5.1.3.3) Removed explicit .NET version from NuGet Release CI
 - (5.1.3.3) Removed explicit .NET version from OTAPIv3 CI
