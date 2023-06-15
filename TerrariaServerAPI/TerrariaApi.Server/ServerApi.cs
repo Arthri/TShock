@@ -350,7 +350,7 @@ namespace TerrariaApi.Server
 						try
 						{
 							var pdbPath = Path.ChangeExtension(fileInfo.FullName, ".pdb");
-							assembly = Assembly.Load(pe = File.ReadAllBytes(fileInfo.FullName), File.Exists(pdb) ? File.ReadAllBytes(pdbPath) : null);
+							assembly = Assembly.Load(pe = File.ReadAllBytes(fileInfo.FullName), File.Exists(pdbPath) ? File.ReadAllBytes(pdbPath) : null);
 						}
 						catch (BadImageFormatException)
 						{
@@ -518,7 +518,7 @@ namespace TerrariaApi.Server
 					Assembly assembly;
 					if (!loadedAssemblies.TryGetValue(fileName, out assembly))
 					{
-						var pdbPath = Path.ChangeExtension(fileInfo.FullName, ".pdb");
+						var pdbPath = Path.ChangeExtension(fileName, ".pdb");
 						assembly = Assembly.Load(File.ReadAllBytes(path), File.Exists(pdbPath) ? File.ReadAllBytes(pdbPath) : null);
 						// We just do this to return a proper error message incase this is a resolved plugin assembly
 						// referencing an old TerrariaServer version.
