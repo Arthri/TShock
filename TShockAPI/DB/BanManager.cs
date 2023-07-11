@@ -156,10 +156,7 @@ namespace TShockAPI.DB
 		{
 			try
 			{
-				var namecol = casesensitive ? "AccountName" : "UPPER(AccountName)";
-				if (!casesensitive)
-					name = name.ToUpper();
-				using (var reader = database.QueryReader("SELECT * FROM Bans WHERE " + namecol + "=@0", name))
+				using (var reader = database.QueryReader("SELECT * FROM Bans WHERE AccountName=@0", name))
 				{
 					if (reader.Read())
 						return new Ban(reader.Get<string>("IP"), reader.Get<string>("Name"), reader.Get<string>("UUID"), reader.Get<string>("AccountName"), reader.Get<string>("Reason"), reader.Get<string>("BanningUser"), reader.Get<string>("Date"), reader.Get<string>("Expiration"));
@@ -268,8 +265,7 @@ namespace TShockAPI.DB
 		{
 			try
 			{
-				var namecol = casesensitive ? "AccountName" : "UPPER(AccountName)";
-				return database.Query("DELETE FROM Bans WHERE " + namecol + "=@0", casesensitive ? match : match.ToUpper()) != 0;
+				return database.Query("DELETE FROM Bans WHERE AccountName=@0", match) != 0;
 			}
 			catch (Exception ex)
 			{
