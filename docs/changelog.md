@@ -90,6 +90,8 @@ Use past tense when adding new entries; sign your name off when you add or chang
 * Added a property `TSPlayer.Hostile`, which gets pvp player mode. (@AgaSpace)
 * Fixed typo in `/gbuff`. (@sgkoishi, #2955)
 * Rewrote the `.dockerignore` file into a denylist. (@timschumi)
+* Added a new permission, `tshock.world.time.usemoondial`, for regulating use of Enchanted Moondial. (@Arthri)
+* Added a set of new permissions, `tshock.specialeffects.{type}`, for regulating use of new special effects(Packet 51) which are not yet recognized by TShock. (@Arthri)
 
 ## TShock 5.2
 * An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team. (@CelestialAnarchy, #2617, @ATFGK)
