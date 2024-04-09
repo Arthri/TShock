@@ -13,6 +13,10 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
 
+      - name: Install Git for Windows SDK
+        uses: git-for-windows/setup-git-for-windows-sdk@v1
+        # Get a version of msgfmt
+
       - name: Run tests
         run: dotnet test
 
