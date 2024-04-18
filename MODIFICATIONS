@@ -13,6 +13,7 @@
 - (5.1.3) Disabled UpdateManager
 - (5.2.0.1) Hid packed content for projects consuming the NuGet package.
 - (5.1.3) Implemented `IParameterCollection` on `EscapedParameterCollection`
+- (5.1.3.6) Installed `msgfmt` on Docker CI
 - (5.1.3) Installed `msgfmt` on NuGet Release CI
 - (5.2.0.5) Installed `msgfmt` on OTAPI Test CI
 - (5.1.3.1) Matrixified NuGet Release CI
