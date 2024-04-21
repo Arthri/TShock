@@ -12,7 +12,7 @@
 - (5.1.3) Disabled UpdateManager
 - (5.2.0.1) Hid packed content for projects consuming the NuGet package.
 - (5.1.3) Implemented `IParameterCollection` on `EscapedParameterCollection`
-- (5.1.3.6) Installed `msgfmt` on Docker CI
+- (5.2.0.6) Installed `msgfmt` on Docker CI
 - (5.1.3) Installed `msgfmt` on NuGet Release CI
 - (5.2.0.5) Installed `msgfmt` on OTAPI Test CI
 - (5.1.3.1) Matrixified NuGet Release CI
@@ -27,4 +27,5 @@
 - (5.1.3) Replaced `Main.ServerSideCharacter` with `TShock.ServerSideCharacterConfig.Settings.Enabled` wherever appropriate
 - (5.1.3) Reverted Ban System Rewrite
   - (5.2.0.3) Made AccountName methods always use case-sensitive checks
+- (5.2.0.6) Rewrote MonoMod RuntimeDetour hooks to OTAPI-provided hooks
 - (5.1.3.3) Updated `.gitignore`
