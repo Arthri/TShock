@@ -2,7 +2,7 @@
 # They should not be set in the global scope manually.
 
 FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:6.0 AS builder
-RUN sudo apt update
+RUN apt update
 RUN apt-get install -y gettext
 
 # Copy build context
