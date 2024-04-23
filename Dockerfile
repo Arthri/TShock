@@ -1,9 +1,9 @@
-ARG TARGETPLATFORM=linux/amd64
-ARG BUILDPLATFORM=${TARGETPLATFORM}
+# TARGETPLATFORM and BUILDPLATFORM are automatically filled in by Docker buildx.
+# They should not be set in the global scope manually.
 
-FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:6.0 AS builder
-
-ARG TARGETPLATFORM
+FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:8.0 AS builder
+RUN apt update
+RUN apt-get install -y gettext
 
 # Copy build context
 WORKDIR /TShock
@@ -12,6 +12,10 @@ COPY . ./
 # Build and package release based on target architecture
 RUN dotnet build -v m
 WORKDIR /TShock/TShockLauncher
+
+# Make TARGETPLATFORM available to the container.
+ARG TARGETPLATFORM
+
 RUN \ 
   case "${TARGETPLATFORM}" in \
     "linux/amd64") export ARCH="linux-x64" \

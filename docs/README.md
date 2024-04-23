@@ -27,7 +27,6 @@ Generally, TShock needs at least 1GB of memory, but alternative tile providers m
           |------HttpServer.dll
           |------ModFramework.dll
           |------OTAPI.dll
-          |------OTAPI.Runtime.dll
           |------TerrariaServer.dll
           ServerPlugins\
           |------TShockAPI.dll
