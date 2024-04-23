@@ -52,10 +52,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
-		<None Include="$(PkgMODEFDP_OTAPI_Upcoming)\lib\net6.0\OTAPI.Runtime.dll">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		</None>
 		<None Include="$(PkgModFramework)\lib\net6.0\ModFramework.dll">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
