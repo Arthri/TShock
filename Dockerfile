@@ -1,7 +1,7 @@
 # TARGETPLATFORM and BUILDPLATFORM are automatically filled in by Docker buildx.
 # They should not be set in the global scope manually.
 
-FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:6.0 AS builder
+FROM --platform=${BUILDPLATFORM} mcr.microsoft.com/dotnet/sdk:8.0 AS builder
 RUN apt update
 RUN apt-get install -y gettext
 
