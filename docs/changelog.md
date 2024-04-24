@@ -96,6 +96,7 @@ Use past tense when adding new entries; sign your name off when you add or chang
 * Added check for `tshock.npc.summonboss` permission for Skeletron summoning. (@Arthri)
 * Fixed `DisableDungeonGuardian` disabling Skeletron summon instead. The config option is useless as of writing. (@Arthri)
 * Added CI for Docker images. (@timschumi)
+* Fixed Cursed Flares kicking players for invalid buff. (@Arthri)
 
 ## TShock 5.2
 * An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team. (@CelestialAnarchy, #2617, @ATFGK)
