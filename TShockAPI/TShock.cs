@@ -448,6 +448,8 @@ namespace TShockAPI
 					// Initialize the AchievementManager, which is normally only done on clients.
 					Game._achievements = new AchievementManager();
 
+					IL.Terraria.Initializers.AchievementInitializer.Load += OnAchievementInitializerLoad;
+
 					// Actually call AchievementInitializer.Load, which is also normally only done on clients.
 					AchievementInitializer.Load();
 				}
@@ -495,6 +497,13 @@ namespace TShockAPI
 			}
 		}
 
+		private static void OnAchievementInitializerLoad(ILContext il)
+		{
+			// Modify AchievementInitializer.Load to remove the Main.netMode == 2 check (occupies the first 4 IL instructions)
+			for (var i = 0; i < 4; i++)
+				il.Body.Instructions.RemoveAt(0);
+		}
+
 		protected void CrashReporter_HeapshotRequesting(object sender, EventArgs e)
 		{
 			foreach (TSPlayer player in TShock.Players)
@@ -515,6 +524,8 @@ namespace TShockAPI
 					Geo.Dispose();
 				}
 				SaveManager.Instance.Dispose();
+
+				IL.Terraria.Initializers.AchievementInitializer.Load -= OnAchievementInitializerLoad;
 
 				ModuleManager.Dispose();
 

@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using OTAPI;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -15,19 +14,18 @@ public class ServerInitTests
 	public void EnsureBoots()
 	{
 		var are = new AutoResetEvent(false);
-		PreHookHandler<Hooks.Main.DedicatedServerEventArgs> cb = (Hooks.Main.DedicatedServerEventArgs args) =>
+		On.Terraria.Main.hook_DedServ cb = (On.Terraria.Main.orig_DedServ orig, Terraria.Main instance) =>
 		{
 			are.Set();
 			Debug.WriteLine("Server init process successful");
-			return HookResult.Cancel;
 		};
-		Hooks.Main.PreDedicatedServer += cb;
+		On.Terraria.Main.DedServ += cb;
 
 		new Thread(() => TerrariaApi.Server.Program.Main(new string[] { })).Start();
 
 		var hit = are.WaitOne(TimeSpan.FromSeconds(10));
 
-		Hooks.Main.PreDedicatedServer -= cb;
+		On.Terraria.Main.DedServ -= cb;
 
 		Assert.IsTrue(hit);
 	}
