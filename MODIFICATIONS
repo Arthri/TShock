@@ -1,6 +1,7 @@
 - (5.1.3.3) Added `global.json` to control .NET version
 - (5.2.0.5) Added a new permission, `tshock.world.time.usemoondial`, for regulating use of Enchanted Moondial. (@Arthri)
 - (5.2.0.5) Added a set of new permissions, `tshock.specialeffects.{type}`, for regulating use of new special effects(Packet 51) which are not yet recognized by TShock. (@Arthri)
+- (5.2.0.7) Added checks for the `tshock.npc.summonboss` permission for Skeletron summoning. (@Arthri)
 - (5.1.3) Added modification notice to README
 - (5.1.3.5) Added new workflow "CI (Build)" to build TShock
 - (5.1.3.3) Added target for testing NuGet packages in development environment
