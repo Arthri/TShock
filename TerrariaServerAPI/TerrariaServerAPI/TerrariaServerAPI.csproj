@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<AssemblyName>TerrariaServer</AssemblyName> <!-- old plugins reference this, if it changes, they break -->
+		<TargetFramework>net6.0</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<RunPostBuildEvent>Always</RunPostBuildEvent>
+		<Version>5.2.0.1</Version>
+		<AssemblyTitle>TSAPI</AssemblyTitle>
+		<Product>MODEFDP.TSAPI</Product>
+		<Company>Pryaxis &amp; TShock Contributors</Company>
+		<!-- extras for nuget -->
+		<PackageId>MODEFDP.TSAPI</PackageId>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+		<Authors>Pryaxis &amp; TShock Contributors</Authors>
+		<Description>MODIFIED VERSION - This is the Terraria Server API, the API that TShock for Terraria runs on.</Description>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.Diagnostics.PerformanceCounter" Version="6.0.1" />
+		<PackageReference Include="MODEFDP.OTAPI.Upcoming" Version="3.1.20.1" />
+	</ItemGroup>
+</Project>
