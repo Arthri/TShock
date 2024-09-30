@@ -97,6 +97,7 @@ Use past tense when adding new entries; sign your name off when you add or chang
 * Fixed `DisableDungeonGuardian` disabling Skeletron summon instead. The config option is useless as of writing. (@Arthri)
 * Added CI for Docker images. (@timschumi)
 * Fixed Cursed Flares kicking players for invalid buff. (@Arthri)
+* Ensured `TSPlayer.PlayerData` is non-null whilst syncing loadouts. (@drunderscore)
 
 ## TShock 5.2
 * An additional option `pvpwithnoteam` is added at `PvPMode` to enable PVP with no team. (@CelestialAnarchy, #2617, @ATFGK)
